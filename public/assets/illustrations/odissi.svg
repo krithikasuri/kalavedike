@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600" fill="none" role="img" aria-labelledby="title description">
+  <title id="title">Odissi · three flowing bends</title>
+  <desc id="description">Original abstract composition of three countercurving textile ribbons inspired by tribhangi, accompanied by silver filigree jewelry and a white floral hair ornament arranged as a still life. A stepped temple arch and carved-wheel motifs frame the design. No human figure, head or face. Imagined sample artwork, not a historical depiction.</desc>
+  <defs>
+    <pattern id="paper" width="33" height="35" patternUnits="userSpaceOnUse"><path d="M4 5h5m12 15h5M9 32h3" stroke="#af8643" stroke-opacity=".15"/></pattern>
+    <pattern id="ikat" width="26" height="32" patternUnits="userSpaceOnUse"><path d="m13 1 3 7 5 8-5 8-3 7-3-7-5-8 5-8Z" stroke="#f5ead7" stroke-opacity=".55"/><path d="M10 15h6v2h-6Z" fill="#f5ead7" fill-opacity=".6"/></pattern>
+    <g id="wheel" stroke="#af8643" stroke-width="1.2"><circle r="42"/><circle r="35"/><circle r="26"/><circle r="8" fill="#c77a34" fill-opacity=".35"/><path d="M0-35v27m0 16v27M-35 0h27m16 0h27m-60-25 19 19M6 6l19 19m-50 0L-6 6M6-6l19-19"/><path d="m-10-33 3 9m26-6-5 8m18 9-9 4m9 23-9-4m-5 21-5-8m-23 9 3-9m-23 5 7-6m-13-17h10" stroke-opacity=".7"/></g>
+    <g id="silver-flower" stroke="#77817a" stroke-width="1.2"><path d="M0-8c8-9 13-3 8 3 12-1 12 7 3 9 9 7 3 13-5 7 1 12-7 12-9 3-7 9-13 3-7-5-12 1-12-7-3-9-9-7-3-13 5-7 0-4 4-5 8-1Z" fill="#e1e2d5"/><circle r="4" fill="#f5ead7"/><circle r="1" fill="#77817a"/></g>
+    <g id="drop" stroke="#77817a" stroke-width="1.2"><path d="M0 0c-5 8-8 13-8 18a8 8 0 0 0 16 0C8 13 5 8 0 0Z" fill="#e1e2d5"/><path d="M0 7c-5 10-5 14 0 16 5-2 5-6 0-16Z" stroke="#f5ead7"/><circle cy="30" r="2" fill="#e1e2d5"/></g>
+    <g id="white-petal" stroke="#b3aa96" stroke-width="1.2"><path d="M0 0c-19-18-13-36 0-40C13-36 19-18 0 0Z" fill="#f5ead7"/><path d="M0-5v-26"/></g>
+  </defs>
+  <path fill="#f5ead7" d="M0 0h800v600H0z"/>
+  <path fill="url(#paper)" d="M0 0h800v600H0z"/>
+  <path d="M26 26h748v548H26Z" stroke="#af8643"/>
+  <path d="M36 36h728v528H36Z" stroke="#702d37" stroke-opacity=".5"/>
+  <path d="M59 56h682v15H59Zm0 473h682v15H59Z" fill="#344a3c" fill-opacity=".13"/>
+  <path d="m65 59 12 9 12-9 12 9 12-9 12 9 12-9 12 9 12-9 12 9 12-9 12 9 12-9 12 9 12-9 12 9 12-9 12 9 12-9 12 9 12-9 12 9 12-9 12 9 12-9 12 9 12-9 12 9 12-9 12 9 12-9 12 9 12-9 12 9 12-9 12 9 12-9 12 9 12-9 12 9 12-9 12 9 12-9 12 9 12-9 12 9 12-9 12 9 12-9 12 9 12-9 12 9 12-9 12 9" stroke="#af8643" stroke-width="1.5"/>
+  <path d="M102 460V225h30v-33h33v-29h41v-26h50v-22h67V97h154v18h67v22h50v26h41v29h33v33h30v235" stroke="#344a3c" stroke-width="3"/>
+  <path d="M119 455V241h30v-33h33v-29h41v-26h50v-22h67v-18h120v18h67v22h50v26h41v29h33v33h30v214" stroke="#af8643" stroke-width="2"/>
+  <path d="M131 441V252h30v-33h33v-28h41v-26h50v-22h67v-18h96v18h67v22h50v26h41v28h33v33h30v189" stroke="#af8643" stroke-opacity=".5" stroke-dasharray="2 6"/>
+  <path d="M91 454h51v15H91Zm567 0h51v15h-51Z" fill="#344a3c"/>
+  <use href="#wheel" transform="translate(184 375)"/>
+  <use href="#wheel" transform="translate(616 375)"/>
+  <path d="M155 438h96m298 0h96M158 445h93m298 0h93" stroke="#af8643"/>
+  <path d="M166 422c-16-9-25-21-28-35m89 35c14-8 23-20 26-34m321 34c-14-8-23-20-26-34m89 34c16-9 25-21 28-35" stroke="#af8643"/>
+  <circle cx="402" cy="298" r="146" stroke="#af8643" stroke-opacity=".4"/>
+  <circle cx="402" cy="298" r="135" stroke="#af8643" stroke-opacity=".4" stroke-dasharray="2 7"/>
+  <path d="M306 183c66 36 141 25 173-18-62 12-125-13-173 18Z" fill="#702d37" stroke="#756350" stroke-width="2"/>
+  <path d="M317 181c51 23 109 18 147-6m-138 5c44 14 81 15 120 3" stroke="#af8643" stroke-width="1.5"/>
+  <path d="M339 189c86 7 166 56 123 109-30 38-108 33-119 74-9 32 45 61 106 73-43-33-53-58-14-80 51-30 109-44 105-95-4-47-106-78-201-81Z" fill="#344a3c" stroke="#756350" stroke-width="2.5"/>
+  <path d="M339 189c86 7 166 56 123 109-30 38-108 33-119 74-9 32 45 61 106 73-43-33-53-58-14-80 51-30 109-44 105-95-4-47-106-78-201-81Z" fill="url(#ikat)"/>
+  <path d="M351 192c101 16 171 55 130 108-28 36-112 41-119 76-5 24 35 49 75 65" stroke="#af8643" stroke-width="4"/>
+  <path d="M354 190c93 4 171 38 176 81 5 44-52 60-102 90-36 23-39 46 9 78" stroke="#af8643" stroke-width="2"/>
+  <path d="M447 221c-48 13-86 40-81 72 8 43 79 58 63 101-11 30-68 44-131 38 48 26 125 23 162-13 45-44-10-82-37-112-23-26-11-54 24-86Z" fill="#c77a34" stroke="#756350" stroke-width="2"/>
+  <path d="M441 226c-36 21-64 45-53 70 15 36 70 61 51 102-14 30-58 46-114 42m112-210c-24 25-34 49-18 70" stroke="#f5ead7" stroke-width="1.5"/>
+  <path d="M422 304c40 44 76 76 33 112-27 23-69 33-109 29" stroke="#af8643" stroke-width="3"/>
+  <path d="m330 440 2 16m8-15 3 17m7-16 4 17m6-16 4 16m6-16 4 16" stroke="#c77a34" stroke-width="2"/>
+  <path d="M248 471h304l50 42H198Z" fill="#702d37" fill-opacity=".12"/>
+  <g transform="translate(253 242)">
+    <path d="M-52 0a52 52 0 0 1 104 0l-16 2a36 36 0 0 0-72 0Z" fill="#e1e2d5" stroke="#77817a" stroke-width="1.5"/>
+    <use href="#white-petal" transform="translate(-43 -4) rotate(-72)"/>
+    <use href="#white-petal" transform="translate(-36 -23) rotate(-48)"/>
+    <use href="#white-petal" transform="translate(-19 -35) rotate(-24)"/>
+    <use href="#white-petal" transform="translate(0 -39)"/>
+    <use href="#white-petal" transform="translate(19 -35) rotate(24)"/>
+    <use href="#white-petal" transform="translate(36 -23) rotate(48)"/>
+    <use href="#white-petal" transform="translate(43 -4) rotate(72)"/>
+    <path d="M-48-2a48 48 0 0 1 96 0" stroke="#77817a" stroke-width="5" stroke-dasharray="1 6" stroke-linecap="round"/>
+    <path d="M-33 3h66m-58 6h50" stroke="#af8643" stroke-width="2"/>
+  </g>
+  <g transform="translate(567 231)">
+    <use href="#silver-flower"/>
+    <path d="M-5 16c-20 12-17 35 5 41 22-6 25-29 5-41m-7 3c-12 13-10 24 2 30 12-6 14-17 2-30" stroke="#77817a" stroke-width="1.5"/>
+    <use href="#drop" transform="translate(-15 43) scale(.65)"/>
+    <use href="#drop" transform="translate(0 56) scale(.8)"/>
+    <use href="#drop" transform="translate(15 43) scale(.65)"/>
+  </g>
+  <g transform="translate(400 469)">
+    <path d="M-81-11c12 55 150 55 162 0M-72-9c14 39 130 39 144 0" stroke="#77817a" stroke-width="2"/>
+    <use href="#silver-flower" transform="translate(-68 4) scale(.65)"/>
+    <use href="#silver-flower" transform="translate(-48 17) scale(.65)"/>
+    <use href="#silver-flower" transform="translate(-25 23) scale(.65)"/>
+    <use href="#silver-flower" transform="translate(0 25) scale(.9)"/>
+    <use href="#silver-flower" transform="translate(25 23) scale(.65)"/>
+    <use href="#silver-flower" transform="translate(48 17) scale(.65)"/>
+    <use href="#silver-flower" transform="translate(68 4) scale(.65)"/>
+    <use href="#drop" transform="translate(-48 25) scale(.55)"/>
+    <use href="#drop" transform="translate(-25 31) scale(.55)"/>
+    <use href="#drop" transform="translate(0 36) scale(.65)"/>
+    <use href="#drop" transform="translate(25 31) scale(.55)"/>
+    <use href="#drop" transform="translate(48 25) scale(.55)"/>
+    <path d="M-81-11c-21-15-29-7-22 1 6 6 15 5 22-1m162 0c21-15 29-7 22 1-6 6-15 5-22-1" stroke="#77817a" stroke-width="1.5"/>
+  </g>
+  <path d="M63 536h674" stroke="#af8643" stroke-dasharray="3 6" stroke-width="2"/>
+</svg>

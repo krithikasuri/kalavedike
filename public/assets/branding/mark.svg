@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" fill="none">
+  <title>Decorative floral medallion</title>
+  <rect width="80" height="80" rx="40" fill="#702d37"/>
+  <g stroke="#edcd91" stroke-width="1.5">
+    <circle cx="40" cy="40" r="29"/><circle cx="40" cy="40" r="24"/>
+    <path d="M40 14C25 28 25 52 40 66C55 52 55 28 40 14ZM14 40C28 25 52 25 66 40C52 55 28 55 14 40Z"/>
+    <path d="M22 22C20 42 38 60 58 58C60 38 42 20 22 22ZM58 22C38 20 20 38 22 58C42 60 60 42 58 22Z"/>
+    <circle cx="40" cy="40" r="6" fill="#edcd91"/>
+  </g>
+</svg>

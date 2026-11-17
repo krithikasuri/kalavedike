@@ -1,0 +1,19 @@
+:root {
+  font-family: "Segoe UI", "Helvetica Neue", sans-serif;
+  color: #332d27;
+  background: #fcf8f0;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  --paper: #fcf8f0;
+  --linen: #f3eadc;
+  --ink: #332d27;
+  --muted: #716354;
+  --wine: #702d37;
+  --wine-dark: #51232a;
+  --gold: #8d632b;
+  --line: #dfd2bd;
+  --green: #344a3c;
+  --serif: "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
+  --radius: 3px;
+}

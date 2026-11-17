@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600" fill="none" role="img" aria-labelledby="title description">
+  <title id="title">Kathak · circles held in cloth</title>
+  <desc id="description">An original abstract still life of a swirling burgundy dance skirt and saffron scarf, with paired ghungroo ankle-bell straps. Concentric rhythm rings and scalloped textile borders suggest turning motion. Only fabric and accessories: no people, heads or faces. An imagined sample, not a real performance.</desc>
+  <defs>
+    <pattern id="paper" width="31" height="34" patternUnits="userSpaceOnUse"><path d="M4 9h5m14 14h3M8 31h4" stroke="#af8643" stroke-opacity=".15"/></pattern>
+    <pattern id="border" width="36" height="24" patternUnits="userSpaceOnUse"><path d="M0 20C0 0 36 0 36 20M0 22h36" stroke="#af8643"/><path d="m18 8 4 6-4 6-4-6Z" fill="#702d37" fill-opacity=".5"/></pattern>
+    <g id="bell" stroke="#756350" stroke-width="1.25"><path d="M0-7c6 0 7 6 6 10l3 3H-9l3-3c-1-4 0-10 6-10Z" fill="#af8643"/><path d="M-4-3h8M0 7v4" stroke="#f5ead7"/><circle cy="11" r="1.7" fill="#702d37"/></g>
+    <g id="flower" stroke="#af8643" stroke-width="1.2"><path d="M0 0c-20-10-18-27-5-24C-8-39 8-39 5-24 18-27 20-10 0 0Z" fill="#c77a34" fill-opacity=".2"/><path d="M0 1v-21m0 11-6-8m6 3 6-8"/></g>
+  </defs>
+  <path fill="#f5ead7" d="M0 0h800v600H0z"/>
+  <path fill="url(#paper)" d="M0 0h800v600H0z"/>
+  <path d="M26 26h748v548H26Z" stroke="#af8643"/>
+  <path d="M36 36h728v528H36Z" stroke="#702d37" stroke-opacity=".5"/>
+  <path fill="url(#border)" d="M49 46h702v24H49zm0 484h702v24H49z"/>
+  <path d="M72 91v420m656-420v420" stroke="#af8643"/>
+  <path d="M82 97v408m636-408v408" stroke="#af8643" stroke-dasharray="2 7"/>
+  <circle cx="405" cy="294" r="198" stroke="#af8643" stroke-opacity=".3"/>
+  <circle cx="405" cy="294" r="184" stroke="#af8643" stroke-dasharray="1 8"/>
+  <circle cx="405" cy="294" r="165" stroke="#af8643" stroke-opacity=".4"/>
+  <path d="M237 132a229 229 0 0 1 304-25M590 158a229 229 0 0 1 44 203M552 470a229 229 0 0 1-289-1M180 333a229 229 0 0 1 19-139" stroke="#344a3c" stroke-width="2"/>
+  <path d="M267 123a203 203 0 0 1 190-27m151 121a203 203 0 0 1-3 161M480 484a203 203 0 0 1-208-39" stroke="#c77a34" stroke-width="5" stroke-dasharray="1 18" stroke-linecap="round"/>
+  <g fill="#702d37" stroke="#af8643">
+    <path d="m405 82 7 9-7 9-7-9Z"/><path d="m609 285 7 9-7 9-7-9Z"/><path d="m405 488 7 9-7 9-7-9Z"/><path d="m201 285 7 9-7 9-7-9Z"/>
+  </g>
+  <g stroke="#af8643" stroke-width="1.5">
+    <path d="m405 107 0 13m90 10-6 11m76 55-11 7m37 91h-13m-13 99-11-6m-59 70-6-11m-84 34v-13m-98-10 7-11m-75-59 11-6m-36-87h13m12-91 12 6m58-69 7 11"/>
+  </g>
+  <use href="#flower" transform="translate(132 199)"/>
+  <use href="#flower" transform="translate(132 260)"/>
+  <use href="#flower" transform="translate(132 321)"/>
+  <use href="#flower" transform="translate(132 382)"/>
+  <use href="#flower" transform="translate(668 199)"/>
+  <use href="#flower" transform="translate(668 260)"/>
+  <use href="#flower" transform="translate(668 321)"/>
+  <use href="#flower" transform="translate(668 382)"/>
+  <path d="M209 251c-55-47-33-97 15-102 37-4 56 29 82 31 34 3 58-37 105-31 61 8 77 66 130 67 27 0 46-10 70-34-4 52-40 81-85 76-61-7-79-64-121-70-40-5-62 29-103 29-48 0-73-47-93-32-17 12-16 35 0 66Z" fill="#c77a34" stroke="#756350" stroke-width="2"/>
+  <path d="M206 234c-23-40-6-69 23-61 27 7 44 35 76 32 40-4 66-35 104-29 51 9 74 66 124 69 24 1 47-8 67-30" stroke="#f5ead7" stroke-width="2"/>
+  <path d="M219 154c36-4 61 38 91 34 36-4 59-36 100-31 61 8 82 65 129 65 24 0 42-6 59-19" stroke="#af8643" stroke-width="3"/>
+  <path d="m211 240-9 22m4-30-14 19m9-27-17 16m14-25-19 13" stroke="#c77a34" stroke-width="2"/>
+  <ellipse cx="407" cy="488" rx="164" ry="13" fill="#702d37" fill-opacity=".09"/>
+  <g stroke="#6b4c42" stroke-linejoin="round">
+    <path d="M366 217c19 7 40 5 60-5 2 67 43 102 94 133 39 24 72 53 81 83-70 54-255 79-384 18 18-62 112-105 149-229Z" fill="#702d37" stroke-width="2.5"/>
+    <path d="M367 223c-9 91-62 168-118 217 53-32 112-109 130-214m9 0c-3 88-24 160-61 230 58-72 70-144 72-232m11-3c3 106 33 180 81 232-28-68-65-143-70-235m9 34c33 78 80 118 139 156-37-54-100-86-139-156" fill="#a1534a" stroke-width="1.3"/>
+    <path d="M249 421c96 41 228 33 337-16l15 23c-70 54-255 79-384 18l12-24Z" fill="#344a3c" stroke-width="2"/>
+    <path d="M235 434c105 45 249 32 359-17m-369 25c106 49 257 36 370-17" stroke="#af8643" stroke-width="2"/>
+    <path d="m267 438 4 9 9-4m22 3 5 9 9-5m25 2 6 8 8-6m25-1 7 7 7-7m25-3 8 6 6-8m25-4 9 5 5-9m24-6 9 4 4-10m24-7 9 3 3-10m23-9 10 2 2-10" stroke="#f5ead7" stroke-width="1.6"/>
+    <path d="M365 216c19 9 42 6 63-4l2 15c-20 13-43 15-66 6Z" fill="#af8643" stroke-width="1.5"/>
+    <path d="m370 224 7 2m4 1 7 1m5 0 7-1m5-1 7-2m5-2 7-3" stroke="#f5ead7" stroke-width="2"/>
+  </g>
+  <path d="M164 461c17-21 53-27 81-9m334 16c27-18 58-18 78-2M191 476c10-8 25-11 38-7m357 12c12-6 27-9 40-5" stroke="#af8643" stroke-width="1.5"/>
+  <g transform="translate(283 487) rotate(-8)">
+    <path d="M-52-13H52v24H-52Z" fill="#344a3c" stroke="#756350" stroke-width="2"/>
+    <path d="M-49-8h98m-98 13h98" stroke="#af8643"/>
+    <use href="#bell" x="-42"/><use href="#bell" x="-21"/><use href="#bell"/><use href="#bell" x="21"/><use href="#bell" x="42"/>
+    <use href="#bell" x="-42" y="17"/><use href="#bell" x="-21" y="17"/><use href="#bell" y="17"/><use href="#bell" x="21" y="17"/><use href="#bell" x="42" y="17"/>
+    <path d="M-52-5c-28-24-46-8-34 2 9 8 23 4 34 1m104-3c28-24 46-8 34 2-9 8-23 4-34 1" stroke="#344a3c" stroke-width="2"/>
+  </g>
+  <g transform="translate(517 487) rotate(8)">
+    <path d="M-52-13H52v24H-52Z" fill="#344a3c" stroke="#756350" stroke-width="2"/>
+    <path d="M-49-8h98m-98 13h98" stroke="#af8643"/>
+    <use href="#bell" x="-42"/><use href="#bell" x="-21"/><use href="#bell"/><use href="#bell" x="21"/><use href="#bell" x="42"/>
+    <use href="#bell" x="-42" y="17"/><use href="#bell" x="-21" y="17"/><use href="#bell" y="17"/><use href="#bell" x="21" y="17"/><use href="#bell" x="42" y="17"/>
+    <path d="M-52-5c-28-24-46-8-34 2 9 8 23 4 34 1m104-3c28-24 46-8 34 2-9 8-23 4-34 1" stroke="#344a3c" stroke-width="2"/>
+  </g>
+</svg>

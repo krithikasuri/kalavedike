@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600" fill="none" role="img" aria-labelledby="title description">
+  <title id="title">Bharatanatyam · the pleated offering</title>
+  <desc id="description">Original editorial textile composition: a suspended saffron and burgundy pleated dance fan, paired ankle bells and brass stage lamps beneath a stylized temple canopy. Garment and accessories only, with no person, head or face. An imagined illustration, not a historical or real event.</desc>
+  <defs>
+    <pattern id="grain" width="29" height="29" patternUnits="userSpaceOnUse"><path d="M2 5h4m12 13h5M7 26h3" stroke="#af8643" stroke-opacity=".16"/></pattern>
+    <pattern id="diamonds" width="28" height="24" patternUnits="userSpaceOnUse"><path d="m14 3 9 9-9 9-9-9Z" stroke="#af8643"/><circle cx="14" cy="12" r="2" fill="#af8643"/></pattern>
+    <g id="bell" stroke="#786652" stroke-width="1.4"><path d="M-6 0c-1-12 13-12 12 0l3 6H-9Z" fill="#af8643"/><path d="M-4-7h8M0 7v3" stroke="#f5ead7"/><circle cy="11" r="2" fill="#702d37"/></g>
+    <g id="lamp" stroke="#786652" stroke-width="2"><path d="M0 0v100m-5-71H5m-8 54H8m-21 17h26l14 10h-54Z" fill="#af8643"/><path d="M-29-7h58c-4 25-54 25-58 0Z" fill="#af8643"/><path d="M-6-11c-8-12 5-20 7-33 10 17 13 27 3 33" fill="#c77a34" stroke="none"/><path d="M-18 0h36" stroke="#f5ead7"/></g>
+    <g id="lotus" stroke="#af8643"><path d="M0 0c-30 0-43-15-44-31 22 0 35 10 44 31 9-21 22-31 44-31C43-15 30 0 0 0Z" fill="#c77a34" fill-opacity=".28"/><path d="M0-1c-22-19-21-35 0-54 21 19 22 35 0 54Z" fill="#c77a34" fill-opacity=".28"/></g>
+  </defs>
+  <path fill="#f5ead7" d="M0 0h800v600H0z"/>
+  <path fill="url(#grain)" d="M0 0h800v600H0z"/>
+  <path d="M26 26h748v548H26Z" stroke="#af8643"/>
+  <path d="M36 36h728v528H36Z" stroke="#702d37" stroke-opacity=".5"/>
+  <path d="M55 86h690M55 96h690" stroke="#af8643" stroke-width="2"/>
+  <path d="m65 66 15-15 15 15-15 15Zm45 0 15-15 15 15-15 15Zm45 0 15-15 15 15-15 15Zm45 0 15-15 15 15-15 15Zm45 0 15-15 15 15-15 15Zm45 0 15-15 15 15-15 15Zm45 0 15-15 15 15-15 15Zm45 0 15-15 15 15-15 15Zm45 0 15-15 15 15-15 15Zm45 0 15-15 15 15-15 15Zm45 0 15-15 15 15-15 15Zm45 0 15-15 15 15-15 15Zm45 0 15-15 15 15-15 15Zm45 0 15-15 15 15-15 15Zm45 0 15-15 15 15-15 15Z" fill="#702d37" fill-opacity=".16" stroke="#af8643"/>
+  <path d="M121 464V207h32v-26h31v-24h42v-23h62v-15h224v15h62v23h42v24h31v26h32v257" stroke="#344a3c" stroke-width="3"/>
+  <path d="M143 463V221h32v-26h31v-24h42v-22h62v-14h180v14h62v22h42v24h31v26h32v242" stroke="#af8643" stroke-width="2"/>
+  <path d="M99 243h63v19H99Zm539 0h63v19h-63ZM108 269h45v175h-45Zm539 0h45v175h-45Z" fill="#344a3c" stroke="#786652" stroke-width="1.5"/>
+  <path d="M118 279v155m12-155v155m540-155v155m12-155v155" stroke="#af8643" stroke-width="2"/>
+  <path d="M99 449h63v15H99Zm539 0h63v15h-63Z" fill="#af8643" stroke="#786652"/>
+  <circle cx="400" cy="296" r="139" stroke="#af8643" stroke-opacity=".55"/>
+  <circle cx="400" cy="296" r="128" stroke="#af8643" stroke-dasharray="2 7"/>
+  <use href="#lotus" transform="translate(400 202) scale(.7)"/>
+  <path d="M75 484h650l20 48H55Z" fill="#344a3c"/>
+  <path d="M69 495h662M61 518h678" stroke="#af8643" stroke-width="2"/>
+  <path fill="url(#diamonds)" d="M80 498h640v20H80z"/>
+  <path d="M62 540h676M62 546h676" stroke="#702d37" stroke-opacity=".5"/>
+  <use href="#lamp" transform="translate(204 364)"/>
+  <use href="#lamp" transform="translate(596 364)"/>
+  <ellipse cx="400" cy="476" rx="159" ry="10" fill="#702d37" fill-opacity=".1"/>
+  <path d="m355 223 45 15 45-15 8 26-53 20-53-20Z" fill="#702d37" stroke="#786652" stroke-width="2"/>
+  <path d="m355 231 45 16 45-16m-95 10 50 17 50-17" stroke="#af8643" stroke-width="2"/>
+  <g stroke="#786652" stroke-width="1.7" stroke-linejoin="round">
+    <path d="M355 252 239 420c39 42 95 64 161 64s122-22 161-64L445 252l-45 17Z" fill="#c77a34"/>
+    <path d="m355 252-91 190 24 13 78-199Zm22 8-62 207 27 9 46-212Zm23 9v215l28-2-17-217Zm34-13 78 199 24-13-91-190Z" fill="#702d37"/>
+    <path d="M355 252 239 420m127-164-78 199m89-195-62 207m73-203-46 212m58-207v215m11-219 17 217m6-226 78 199m-67-203 116 168"/>
+    <path d="M254 398c36 34 89 56 146 56s110-22 146-56l15 22c-39 42-95 64-161 64s-122-22-161-64Z" fill="#702d37"/>
+    <path d="M249 407c39 37 92 57 151 57s112-20 151-57m-306 7c41 39 94 60 155 60s114-21 155-60" stroke="#af8643" stroke-width="2"/>
+    <path d="m273 423 6 13 13-6m25 11 8 12 12-9m24 7 10 10 10-10m27 1 10 10 10-11m25-6 12 9 8-12m26-9 13 6 6-13" stroke="#f5ead7" stroke-width="2"/>
+  </g>
+  <g transform="translate(264 466) rotate(-13)">
+    <path d="M-49-9h98v22h-98Z" fill="#702d37" stroke="#786652" stroke-width="2"/>
+    <path d="M-45-4h90m-90 11h90" stroke="#af8643"/>
+    <use href="#bell" x="-35"/><use href="#bell" x="-18"/><use href="#bell"/><use href="#bell" x="18"/><use href="#bell" x="35"/>
+    <use href="#bell" x="-35" y="16"/><use href="#bell" x="-18" y="16"/><use href="#bell" y="16"/><use href="#bell" x="18" y="16"/><use href="#bell" x="35" y="16"/>
+    <path d="M-49-4c-29-13-37 5-19 10l19-3m98-7c29-13 37 5 19 10L49 3" stroke="#702d37" stroke-width="2"/>
+  </g>
+  <g transform="translate(531 466) rotate(13)">
+    <path d="M-49-9h98v22h-98Z" fill="#702d37" stroke="#786652" stroke-width="2"/>
+    <path d="M-45-4h90m-90 11h90" stroke="#af8643"/>
+    <use href="#bell" x="-35"/><use href="#bell" x="-18"/><use href="#bell"/><use href="#bell" x="18"/><use href="#bell" x="35"/>
+    <use href="#bell" x="-35" y="16"/><use href="#bell" x="-18" y="16"/><use href="#bell" y="16"/><use href="#bell" x="18" y="16"/><use href="#bell" x="35" y="16"/>
+    <path d="M-49-4c-29-13-37 5-19 10l19-3m98-7c29-13 37 5 19 10L49 3" stroke="#702d37" stroke-width="2"/>
+  </g>
+  <g fill="#f5ead7" stroke="#af8643"><path d="m375 514 25-10 25 10-25 10Z"/><path d="m387 514 13-25 13 25-13 25Z"/><circle cx="400" cy="514" r="4" fill="#c77a34"/></g>
+</svg>
