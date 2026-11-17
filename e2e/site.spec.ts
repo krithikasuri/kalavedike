@@ -126,7 +126,7 @@ test('expanded header navigation fits tablet widths with the contact link', asyn
   }
 })
 
-test('about renders the full approved story, vision, offerings, community and invitation without fictitious trustees', async ({ page }) => {
+test('about renders the full approved story, vision, offerings, community and supplied trustees', async ({ page }, testInfo) => {
   await page.goto('/#/about')
   const main = page.getByRole('main')
   await expect(main.getByRole('heading', { level: 1, name: 'About Kalavedhike', exact: true })).toBeVisible()
@@ -159,10 +159,22 @@ test('about renders the full approved story, vision, offerings, community and in
   await expect(offerings.getByText(about.offeringsIntroduction, { exact: true })).toBeVisible()
   await expect(offerings.getByRole('listitem')).toHaveText(about.offerings)
   await expect(offerings.getByText(about.offeringsConclusion, { exact: true })).toBeVisible()
-  const founders = main.getByRole('region', { name: /Guided by our\s*founding members\./ })
-  await expect(founders).toContainText('The founding members form the trust that guides Kalavedhike')
-  await expect(founders.getByText('Trustee names and individual biographies will be shared here when available.', { exact: true })).toBeVisible()
-  await expect(main.locator('.trustee-card')).toHaveCount(0)
+  const trusteeSection = main.getByRole('region', { name: 'Meet our trustees.', exact: true })
+  await expect(trusteeSection).toContainText('The founding members form the trust that guides Kalavedhike')
+  await expect(trusteeSection).toContainText('Individual biographies and photographs will be added when available.')
+  await expect(trusteeSection.locator('.trustee-card')).toHaveCount(5)
+  for (const name of ['Pallavi K Srinivasa', 'Roopa Sreedharan Madampath', 'Krithika Surianarayanan', 'Shanthi Naresh', 'Tarini Basavaraju']) {
+    const card = trusteeSection.getByRole('article').filter({ has: page.getByRole('heading', { name, exact: true }) })
+    await expect(card.getByRole('heading', { name, exact: true })).toBeVisible()
+    await expect(card.getByRole('img', { name: `Photo placeholder for ${name}`, exact: true })).toBeVisible()
+    await expect(card.getByText('Photo to follow', { exact: true })).toBeVisible()
+    await expect(card).toContainText(`${name} is a trustee of Kalavedhike.`)
+    await expect(card.locator('img')).toHaveCount(0)
+    await expect(card).not.toContainText('Sample profile')
+  }
+  const trusteeScreenshot = join(artifacts, `kalavedike-trustees-${testInfo.project.name}.png`)
+  await trusteeSection.screenshot({ path: trusteeScreenshot, animations: 'disabled' })
+  await testInfo.attach('Trustee introductions and photo placeholders', { path: trusteeScreenshot, contentType: 'image/png' })
   await main.getByRole('region', { name: /^Join Us on\s*This Journey$/ }).getByRole('link', { name: /Explore our programs/ }).click()
   await expect(page).toHaveURL(/#\/events$/)
 })

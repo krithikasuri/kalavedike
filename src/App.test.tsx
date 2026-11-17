@@ -4,6 +4,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import App from './App'
 import { about } from './content/about'
 import { site } from './content/site'
+import { trustees } from './content/trustees'
 
 const firstEventId = 'calendar-2027-01-23-carnatic-vocal-1'
 const originalEmail = site.email
@@ -86,7 +87,18 @@ describe('Kalavedhike pages', () => {
     expect(main.getByText(`${site.name} | ${site.signature}`)).toBeInTheDocument()
     expect(main.getByText(/travelling over 90 minutes each way/)).toBeInTheDocument()
     expect(main.getByText(/Malleswaram, Basavanagudi, and Banashankari/)).toBeInTheDocument()
-    expect(main.getByText('Trustee names and individual biographies will be shared here when available.')).toBeInTheDocument()
+    const trusteeSection = within(main.getByRole('region', { name: 'Meet our trustees.' }))
+    const cards = trusteeSection.getAllByRole('article')
+    expect(cards).toHaveLength(5)
+    for (const [index, trustee] of trustees.entries()) {
+      const card = within(cards[index])
+      expect(card.getByRole('heading', { name: trustee.name, level: 3 })).toBeInTheDocument()
+      expect(card.getByText(trustee.bio)).toBeInTheDocument()
+      expect(card.getByText('Trustee', { exact: true })).toBeInTheDocument()
+      expect(card.getByRole('img', { name: `Photo placeholder for ${trustee.name}` })).toBeInTheDocument()
+      expect(card.getByText('Photo to follow')).toBeInTheDocument()
+    }
+    expect(trusteeSection.getByText(/Individual biographies and photographs will be added when available/)).toBeInTheDocument()
     expect(main.queryByText(/Trustee profile 0|Illustrative trust copy|Sample vision and values|Stewardship & vision/)).not.toBeInTheDocument()
     expect(screen.getByRole('complementary', { name: 'Program and gallery notice' })).not.toHaveTextContent(/Trust copy|trustee profiles|vision/i)
   })

@@ -38,7 +38,20 @@ describe('site content', () => {
       if (event.startsAt === undefined) throw new Error('Sample gallery archive uses timed events')
       expect(Date.parse(event.startsAt)).toBeLessThan(Date.parse(event.endsAt))
     }
-    expect(trustees).toEqual([])
+  })
+
+  it('lists the five supplied trustees without inventing offices or personal biographies', () => {
+    expect(trustees.map((trustee) => trustee.name)).toEqual([
+      'Pallavi K Srinivasa', 'Roopa Sreedharan Madampath', 'Krithika Surianarayanan',
+      'Shanthi Naresh', 'Tarini Basavaraju',
+    ])
+    expect(new Set(trustees.map((trustee) => trustee.id)).size).toBe(5)
+    for (const trustee of trustees) {
+      expect(trustee.role).toBe('Trustee')
+      expect(trustee.sample).toBe(false)
+      expect(trustee.bio).toContain(`${trustee.name} is a trustee of Kalavedhike.`)
+      expect(trustee.bio.length).toBeGreaterThan(150)
+    }
   })
 
   it('retains all requested art forms and local assets', () => {

@@ -36,7 +36,7 @@ The browser runner starts its own development server on port 4178, builds the pr
 ## Pages
 
 - **Home:** the approved community-focused vision, time-aware upcoming/ongoing programs, and artwork representing Carnatic music, Bharatanatyam, Hindustani music, Kathak, and Odissi.
-- **About:** the supplied founding story, full vision, art forms, community purpose, and invitation to join the journey. The founding-members/trust section does not invent individual names, roles, or biographies.
+- **About:** the supplied founding story, full vision, art forms, community purpose, and invitation to join the journey. Five named trustees have face-free photo placeholders and mission-based introductions; individual biographies are not invented.
 - **Events:** compact, chronological season overview showing every listed program without empty calendar days. Music/Dance filters include program counts; a year selector appears only when multiple seasons are available. The same event list adapts from desktop cards to mobile rows. A direct program link looks like `/#/events?event=calendar-2027-01-23-carnatic-vocal-1`.
 - **Gallery:** a direct Instagram action for photos and updates. No placeholder thumbnails, fictional albums, art-form filters, or sample descriptions are displayed.
 - **Contact us:** questions about Kalavedhike and its programs, an email link when configured, and the Instagram contact option. Linked from both header and footer.
@@ -76,7 +76,7 @@ The contact email has not been supplied. Set `site.email` in `src\content\site.t
 
 The user confirmed permission to reuse selected material from [@bellezeakalavedike](https://www.instagram.com/bellezeakalavedike/). The logo was downloaded from the profile's public Open Graph image metadata on 17 November 2026 and stored locally as `public\assets\branding\instagram-logo.jpg`. It is a small 150-by-150-pixel JPEG with a stylized orange instrument/letterform on black and no artist faces. The header, footer, and favicon use this logo; the floral medallion elsewhere is original decoration, not a substitute logo. A high-resolution original can replace the small profile image later.
 
-Individual trustee names/biographies and actual event imagery have not been supplied. `trustees.ts` is intentionally empty: add approved trustee records when available rather than publishing fictitious people or roles. Supply permitted files or directly accessible asset links for imagery; do not scrape Instagram, hotlink expiring CDN URLs, or use account credentials.
+The supplied trustees are Pallavi K Srinivasa, Roopa Sreedharan Madampath, Krithika Surianarayanan, Shanthi Naresh, and Tarini Basavaraju. `trustees.ts` maintains their names and Trustee role. Current introductions state that role and describe the trust's approved shared mission, not personal backgrounds or specialist responsibilities. Photos use labelled initials placeholders; replace the introductions with approved individual biographies when supplied. Actual trustee photos and event imagery have not been supplied. Use permitted files or directly accessible asset links; do not scrape Instagram, hotlink expiring CDN URLs, or use account credentials.
 
 Keep **all imagery free of artist faces**, including trustee cards and gallery media. Check supplied files and use approved face-free crops or alternatives. Original local SVG illustrations currently represent the five art forms; they are not photographs or records of real performances. Do not describe them as such.
 
@@ -86,7 +86,7 @@ Keep **all imagery free of artist faces**, including trustee cards and gallery m
 | --- | --- |
 | `site.ts` | Display name/logo, tagline/signature, Instagram link, contact email, approved full vision, program/gallery notice, art-form definitions, local asset helpers |
 | `about.ts` | Complete approved About narrative and performing-art offerings |
-| `trustees.ts` | Approved names, roles, and biographies when supplied; currently empty |
+| `trustees.ts` | Five supplied trustee names, Trustee roles, and mission-based introductory paragraphs |
 | `events.ts` | Generated spreadsheet snapshot used by Home and Events; refresh with `npm run sync:events` |
 | `sampleArchive.ts` | Archived fictional development records; not rendered by the current gallery |
 | `gallery.ts` | Archived sample album metadata; not rendered by the current gallery |

@@ -58,14 +58,15 @@ export function AboutPage() {
 
       <section className="container section-pad" aria-labelledby="trustees-heading">
         <div className="section-heading">
-          <div><p className="eyebrow">The people behind the purpose</p><h2 id="trustees-heading">Guided by our <br /><em>founding members.</em></h2></div>
+          <div><p className="eyebrow">The people behind the purpose</p><h2 id="trustees-heading">Meet our <em>trustees.</em></h2></div>
           <p className="heading-note">United by a passion for the arts <br />and a commitment to our neighbourhood.</p>
         </div>
         <p className="trustee-introduction">The founding members form the trust that guides {site.name}, bringing together their love for Indian classical performing arts and their commitment to the community.</p>
+        <p className="trustee-profile-note">These introductions reflect the trust's shared purpose. Individual biographies and photographs will be added when available.</p>
         {trustees.length > 0 ? (
-          <div className="trustee-grid">{trustees.map((trustee, index) => (
+          <div className="trustee-grid">{trustees.map((trustee) => (
             <article className="trustee-card" key={trustee.id}>
-              <div className="trustee-motif" aria-hidden="true"><span>{String(index + 1).padStart(2, '0')}</span></div>
+              <div className="trustee-photo-placeholder" role="img" aria-label={`Photo placeholder for ${trustee.name}`}><span className="trustee-initials" aria-hidden="true">{trustee.name.split(' ').map((part) => part[0]).join('')}</span><span className="trustee-photo-label" aria-hidden="true">Photo to follow</span></div>
               <p className="eyebrow">{trustee.role}</p><h3>{trustee.name}</h3><p>{trustee.bio}</p>
               {trustee.sample && <SampleBadge>Sample profile</SampleBadge>}
             </article>
