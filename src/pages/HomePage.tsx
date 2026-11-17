@@ -40,7 +40,7 @@ export function HomePage() {
       <section className="programs-section section-pad" aria-labelledby="programs-title">
         <div className="container">
           <div className="section-heading"><div><p className="eyebrow">Make room for the arts</p><h2 id="programs-title">Coming to our <em>community.</em></h2></div><Link to="/events" className="text-link">View the calendar <span aria-hidden="true">&rarr;</span></Link></div>
-          <p className="section-description">From our 2027 planning calendar. All dates are proposed, not confirmed bookings; artists, times, and venues are to be announced.</p>
+          <p className="section-description">Explore upcoming programs in our neighbourhood. Dates marked as proposed are not confirmed bookings; open a program for its latest details.</p>
           {programs.length > 0 ? <div className="event-cards">{programs.map((event) => <EventCard key={event.id} event={event} />)}</div> : <div className="empty-state"><h3>The next chapter is taking shape.</h3><p>No upcoming programs are listed. Please check back for future announcements.</p></div>}
         </div>
       </section>

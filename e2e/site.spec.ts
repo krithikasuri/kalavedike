@@ -1,7 +1,15 @@
 import { expect, test, type Page } from '@playwright/test'
 import { join, resolve } from 'node:path'
 import { about } from '../src/content/about'
+import eventRecords from '../src/content/events.json' with { type: 'json' }
+import sponsorRecords from '../src/content/sponsors.json' with { type: 'json' }
+import { parseEvents, parseSponsors } from '../src/content/parseContent'
+import type { Program } from '../src/content/types'
+import { comparePrograms, formatDate, formatEventRange, formatTime, programDate, programEndDate, programStart, upcomingEvents } from '../src/lib/dates'
 
+const now = new Date('2026-11-17T04:30:00Z')
+const events = parseEvents(eventRecords)
+const sponsors = parseSponsors(sponsorRecords)
 const artifacts = process.env.KALAVEDIKE_ARTIFACTS_DIR ?? resolve('test-results')
 const routes = [
   { path: '/', label: 'Home', title: 'Home' },
@@ -11,26 +19,37 @@ const routes = [
   { path: '/sponsors', label: 'Sponsors', title: 'Sponsors' },
   { path: '/contact', label: 'Contact us', title: 'Contact us' },
 ] as const
-const schedule = [
-  ['2027-01-23', 'Carnatic Vocal 1'],
-  ['2027-02-13', 'Bharatanatyam 1'],
-  ['2027-03-13', 'Carnatic Instrumental 1 - Veena'],
-  ['2027-04-10', 'Carnatic Vocal 2'],
-  ['2027-05-08', 'Bharatanatyam 2'],
-  ['2027-06-12', 'Hindustani Vocal'],
-  ['2027-07-10', 'Carnatic Vocal 3'],
-  ['2027-08-21', 'Kathak'],
-  ['2027-09-11', 'Carnatic Instrumental 2 - Violin'],
-  ['2027-10-16', 'Bharatanatyam 3'],
-  ['2027-11-13', 'Carnatic Vocal 4'],
-  ['2027-12-11', 'Bharatanatyam 4'],
-].map(([date, title]) => ({
-  date,
-  title,
-  id: `calendar-${date}-${title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`,
-  monthStamp: new Intl.DateTimeFormat('en-IN', { month: 'short', timeZone: 'UTC' }).format(new Date(date)),
-  dateLabel: new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }).format(new Date(date)),
-}))
+const schedule = [...events].sort(comparePrograms)
+const years = [...new Set(schedule.flatMap((event) => {
+  const first = Number(programDate(event).slice(0, 4))
+  const last = Number(programEndDate(event).slice(0, 4))
+  return Array.from({ length: last - first + 1 }, (_, index) => first + index)
+}))].sort((a, b) => a - b)
+const initialEvent = upcomingEvents(events, now)[0]
+const initialYear = initialEvent ? Number(programDate(initialEvent).slice(0, 4)) : years.at(-1) ?? now.getUTCFullYear()
+const seasonPrograms = (year: number) => schedule.filter((event) => programDate(event) <= `${year}-12-31` && programEndDate(event) >= `${year}-01-01`)
+const isMusic = (event: Program) => event.artForm === 'Carnatic music' || event.artForm === 'Hindustani music'
+const tileName = (event: Program) => `${event.title}, ${formatEventRange(event)}${event.tentative ? ', proposed date' : event.sample ? ', sample program' : ''}`
+
+async function selectYear(page: Page, year: number) {
+  if (years.length > 1) await page.getByRole('combobox', { name: 'Program year', exact: true }).selectOption(String(year))
+  await expect(page.getByRole('region', { name: `${year} season`, exact: true })).toBeVisible()
+}
+
+async function expectDetails(page: Page, event: Program) {
+  const details = page.getByRole('article', { name: event.title, exact: true })
+  await expect(details).toBeVisible()
+  await expect(details.locator('img')).toBeVisible()
+  await expect(details.locator('dt')).toHaveText(['When', 'Where', 'Artists'])
+  await expect(details.locator('dd').nth(0)).toHaveText(formatEventRange(event))
+  await expect(details.locator('dd').nth(1)).toHaveText(event.venue)
+  if (!event.artists?.length) await expect(details.locator('dd').nth(2)).toHaveText('To be announced')
+  await expect(details).toContainText(event.description)
+  if (event.tentative) await expect(details).toContainText('Proposed date')
+  else await expect(details.getByText('Proposed date', { exact: true })).toHaveCount(0)
+  if (!event.startsAt) await expect(details).toContainText('Time to be announced (IST)')
+  return details
+}
 const approvedVision = [
   'To create a vibrant cultural space where the richness of Indian classical performing arts is accessible to everyone, right in their neighbourhood.',
   'We envision a community where distance is no longer a barrier to experiencing the beauty of music and dance, where artists find an appreciative audience, and where the next generation grows up surrounded by the richness of our artistic heritage.',
@@ -43,7 +62,7 @@ test.beforeEach(async ({ page }) => {
   page.on('console', (message) => {
     if (message.type() === 'error') errors.push(message.text())
   })
-  await page.clock.setFixedTime(new Date('2026-11-17T04:30:00Z'))
+  await page.clock.setFixedTime(now)
   await page.exposeFunction('__browserErrors', () => errors)
 })
 
@@ -94,8 +113,7 @@ test('all pages are reachable through hash navigation and the responsive menu', 
     await expect(page.getByRole('banner').getByRole('link', { name: 'Kalavedhike home', exact: true })).toBeVisible()
     await expect(page.getByRole('contentinfo').getByRole('link', { name: /@bellezeakalavedike/ })).toHaveAttribute('href', 'https://www.instagram.com/bellezeakalavedike/')
     const notice = page.getByRole('complementary', { name: 'Program and gallery notice' })
-    await expect(notice).toContainText('All 2027 calendar dates remain proposals, not confirmed bookings.')
-    await expect(notice).toContainText('Visit our Instagram page for photos and updates.')
+    await expect(notice).toContainText('Program details may change. Dates marked as proposed are not confirmed bookings. Visit our Instagram page for photos and updates.')
     await expect(notice).not.toContainText(/placeholder|sample album/i)
     await expect(notice).not.toContainText(/trust copy|trustee profiles|vision|story/i)
     await expect(page.getByRole('main').getByRole('heading', { level: 1 })).toBeVisible()
@@ -142,21 +160,90 @@ test('compact header navigation includes sponsors at tablet widths', async ({ pa
   }
 })
 
-test('sponsors page keeps logo slots blank and does not invent active sponsor websites', async ({ page }, testInfo) => {
+test('sponsors page reflects configured records and only links confirmed sponsors', async ({ page }, testInfo) => {
   await page.goto('/#/sponsors')
   const main = page.getByRole('main')
   await expect(page).toHaveTitle('Sponsors | Kalavedhike')
   await expect(main.getByRole('heading', { level: 1, name: 'Our sponsors', exact: true })).toBeVisible()
-  await expect(main.getByText(/not confirmed sponsors/)).toBeVisible()
-  await expect(main.locator('.sponsor-card')).toHaveCount(3)
-  await expect(main.getByRole('img', { name: 'Blank sponsor logo placeholder', exact: true })).toHaveCount(3)
-  await expect(main.locator('img, .sponsor-card a')).toHaveCount(0)
-  await expect(main.getByText('Website to be added', { exact: true })).toHaveCount(3)
+  expect(sponsors).toHaveLength(sponsorRecords.length)
+  await expect(main.locator('.sponsor-card')).toHaveCount(sponsors.length)
+  if (sponsors.some((sponsor) => sponsor.placeholder)) await expect(main.getByText(/not confirmed sponsors/)).toBeVisible()
+  else await expect(main.getByText(/not confirmed sponsors/)).toHaveCount(0)
+  if (!sponsors.length) await expect(main.getByText('Sponsor details will be shared here when available.')).toBeVisible()
+  for (const [index, sponsor] of sponsors.entries()) {
+    const card = main.locator('.sponsor-card').nth(index)
+    await expect(card.getByRole('heading', { name: sponsor.name, exact: true })).toBeVisible()
+    await expect(card).toContainText(sponsor.description)
+    if (sponsor.placeholder) {
+      await expect(card.getByRole('img', { name: 'Blank sponsor logo placeholder', exact: true })).toBeVisible()
+      await expect(card.locator('img, a')).toHaveCount(0)
+      await expect(card.getByText('Website to be added', { exact: true })).toBeVisible()
+    } else {
+      const link = card.getByRole('link', { name: `Visit ${sponsor.name} website (opens in a new tab)`, exact: true })
+      await expect(link).toHaveAttribute('href', sponsor.website)
+      await expect(link).toHaveAttribute('target', '_blank')
+      await expect(link).toHaveAttribute('rel', 'noopener noreferrer')
+      await expect(card.getByRole('img', { name: `${sponsor.name} logo`, exact: true })).toBeVisible()
+    }
+  }
+  await loadImages(page)
   const path = join(artifacts, `kalavedike-sponsors-${testInfo.project.name}.png`)
   await page.screenshot({ path, fullPage: true, animations: 'disabled' })
-  await testInfo.attach('Sponsor placeholder page', { path, contentType: 'image/png' })
+  await testInfo.attach('Configured sponsors page', { path, contentType: 'image/png' })
   await main.getByRole('link', { name: /Get in touch about sponsorship/ }).click()
   await expect(page).toHaveURL(/#\/contact$/)
+})
+
+test('JSON fixtures: event details and sponsors render editable times, venues, links and images', async ({ page, context }, testInfo) => {
+  const event = {
+    id: 'json-concert', title: 'JSON concert fixture', artForm: 'Carnatic music',
+    date: '2027-01-23', time: '18:30', endTime: '20:00', venue: 'Test community hall, Bengaluru',
+    artists: [{ name: 'Test performer', url: 'https://example.com/performer' }],
+    photo: 'assets/illustrations/carnatic.svg', photoAlt: 'A face-free concert stage illustration',
+    description: 'Program details supplied through JSON.', tentative: false,
+  }
+  const sponsor = {
+    id: 'json-sponsor', name: 'JSON sponsor fixture', bio: 'A short sponsor bio supplied through JSON.',
+    website: 'https://example.com/sponsor', logo: 'assets/branding/mark.svg', placeholder: false,
+  }
+  await page.route('**/src/content/events.json*', (route) => route.fulfill({
+    contentType: 'application/javascript', body: `export default ${JSON.stringify([event])}`,
+  }))
+  await page.route('**/src/content/sponsors.json*', (route) => route.fulfill({
+    contentType: 'application/javascript', body: `export default ${JSON.stringify([sponsor])}`,
+  }))
+  await context.route('https://example.com/**', (route) => route.fulfill({
+    contentType: 'text/html', body: '<!doctype html><title>Test destination</title>',
+  }))
+  await page.goto('/#/')
+  await expect(page.getByRole('heading', { name: event.title, exact: true })).toBeVisible()
+  await expect(page.getByRole('img', { name: event.photoAlt, exact: true })).toBeVisible()
+  await page.getByRole('link', { name: `Details for ${event.title}`, exact: true }).click()
+  const details = page.getByRole('article', { name: event.title, exact: true })
+  await expect(details).toContainText(/6:30\s*pm - 8:00\s*pm IST/i)
+  await expect(details).toContainText(event.venue)
+  await expect(details).toContainText(event.description)
+  await expect(details.getByText('Proposed date', { exact: true })).toHaveCount(0)
+  await expect(details.getByRole('img', { name: event.photoAlt, exact: true })).toBeVisible()
+  await expect(page.locator('.season-notice')).toHaveCount(0)
+  await loadImages(page)
+  const path = join(artifacts, `kalavedike-json-event-${testInfo.project.name}.png`)
+  await details.screenshot({ path, animations: 'disabled' })
+  const artistPopup = page.waitForEvent('popup')
+  await details.getByRole('link', { name: /Test performer/ }).click()
+  const artistPage = await artistPopup
+  await expect(artistPage).toHaveURL(event.artists[0].url)
+  await artistPage.close()
+  await page.goto('/#/sponsors')
+  await expect(page.getByText(sponsor.bio, { exact: true })).toBeVisible()
+  await expect(page.getByRole('img', { name: `${sponsor.name} logo`, exact: true })).toBeVisible()
+  await expect(page.locator('.sponsor-notice')).toHaveCount(0)
+  await loadImages(page)
+  const sponsorPopup = page.waitForEvent('popup')
+  await page.getByRole('link', { name: `Visit ${sponsor.name} website (opens in a new tab)`, exact: true }).click()
+  const sponsorPage = await sponsorPopup
+  await expect(sponsorPage).toHaveURL(sponsor.website)
+  await sponsorPage.close()
 })
 
 test('home testimonial carousel supports controls, selectors and keyboard navigation', async ({ page }, testInfo) => {
@@ -296,71 +383,78 @@ test('contact page is reachable from the footer and honestly identifies the unpu
   await expect(main.getByRole('link', { name: /@bellezeakalavedike/ })).toHaveAttribute('href', 'https://www.instagram.com/bellezeakalavedike/')
 })
 
-test('home shows the first three imported programs and opens the January date-only deep link', async ({ page }) => {
+test('home shows up to three upcoming configured programs and opens a persistent deep link', async ({ page }) => {
   await page.goto('/#/')
+  const upcoming = upcomingEvents(events, now).slice(0, 3)
   const cards = page.locator('.event-card')
-  await expect(cards).toHaveCount(3)
-  for (const [index, event] of schedule.slice(0, 3).entries()) {
+  await expect(cards).toHaveCount(upcoming.length)
+  for (const [index, event] of upcoming.entries()) {
     const card = cards.nth(index)
     await expect(card.getByRole('heading', { name: event.title, exact: true })).toBeVisible()
-    await expect(card.locator('time')).toHaveAttribute('datetime', event.date)
-    await expect(card).toContainText(event.dateLabel)
-    await expect(card).toContainText('Time TBA')
-    await expect(card).toContainText('Venue to be announced')
-    await expect(card).toContainText('Proposed date')
-    await expect(card).not.toContainText(/\b\d{1,2}:\d{2}\s*(?:am|pm)\b/i)
+    await expect(card.locator('time')).toHaveAttribute('datetime', programStart(event))
+    await expect(card).toContainText(formatDate(programStart(event)))
+    await expect(card).toContainText(event.startsAt ? `${formatTime(event.startsAt)} IST` : 'Time TBA')
+    await expect(card).toContainText(event.venue)
+    if (event.tentative) await expect(card).toContainText('Proposed date')
+    else await expect(card.getByText('Proposed date', { exact: true })).toHaveCount(0)
   }
-  await page.getByRole('link', { name: 'Details for Carnatic Vocal 1', exact: true }).click()
-  await expect(page).toHaveURL(/\/#\/events\?event=calendar-2027-01-23-carnatic-vocal-1$/)
-  await expect(page.getByRole('region', { name: '2027 season', exact: true })).toBeVisible()
-  const details = page.getByRole('article', { name: 'Carnatic Vocal 1', exact: true })
-  await expect(details).toBeVisible()
-  await expect(details).toContainText('23 January 2027 | Time to be announced (IST)')
-  await expect(details).toContainText('Venue to be announced')
-  await expect(details).toContainText('Proposed date')
-  await expect(details).not.toContainText(/\b\d{1,2}:\d{2}\s*(?:am|pm)\b/i)
+  if (!upcoming.length) {
+    await expect(page.getByText('No upcoming programs are listed. Please check back for future announcements.')).toBeVisible()
+    return
+  }
+  const event = upcoming[0]
+  await cards.first().getByRole('link', { name: `Details for ${event.title}`, exact: true }).click()
+  await expect(page).toHaveURL((url) => new URLSearchParams(url.hash.split('?')[1]).get('event') === event.id)
+  await expect(page.getByRole('region', { name: `${programDate(event).slice(0, 4)} season`, exact: true })).toBeVisible()
+  await expectDetails(page, event)
   await page.reload()
-  await expect(page.getByRole('region', { name: '2027 season', exact: true })).toBeVisible()
-  await expect(details).toBeVisible()
+  await expectDetails(page, event)
 })
 
-test('annual overview shows all twelve programs without empty calendar cells or month controls', async ({ page }) => {
+test('annual overview shows every configured program without empty calendar cells or month controls', async ({ page }) => {
   await page.goto('/#/events')
+  expect(events).toHaveLength(eventRecords.length)
   await expect(page.getByRole('heading', { level: 1, name: 'Make time for the arts.', exact: true })).toBeVisible()
-  const season = page.getByRole('region', { name: '2027 season', exact: true })
-  const list = season.getByRole('list', { name: 'Programs for 2027', exact: true })
-  await expect(list.getByRole('listitem')).toHaveCount(12)
-  await expect(list.getByRole('button')).toHaveCount(12)
-  await expect(list.locator('.program-title')).toHaveText(schedule.map((event) => event.title))
-  await expect(season.getByRole('status')).toContainText('12 programs')
   await expect(page.getByRole('table')).toHaveCount(0)
   await expect(page.locator('td, [role="gridcell"], .day-number, .outside-month')).toHaveCount(0)
   await expect(page.getByRole('button', { name: /^(?:Previous month|Next month|Today|Go to the next listed program)/ })).toHaveCount(0)
-  await expect(season.getByRole('combobox')).toHaveCount(0)
-  await expect(page.locator('.event-selection-hint, .event-details, main img')).toHaveCount(0)
-  for (const event of schedule) {
-    const tile = list.getByRole('button', { name: `${event.title}, ${event.dateLabel} | Time to be announced (IST), proposed date`, exact: true })
-    await tile.scrollIntoViewIfNeeded()
-    await expect(tile).toBeInViewport()
-    await expect(tile.locator('time')).toHaveAttribute('datetime', event.date)
-    await expect(tile.locator('time span')).toHaveText(event.monthStamp)
-    await expect(tile.locator('time strong')).toHaveText(event.date.slice(-2))
-    const artForm = event.title.startsWith('Carnatic') ? 'Carnatic music'
-      : event.title.startsWith('Hindustani') ? 'Hindustani music'
-        : event.title.startsWith('Bharatanatyam') ? 'Bharatanatyam' : 'Kathak'
-    await expect(tile.locator('.program-artform')).toHaveText(artForm)
-    await expect(tile).toContainText('Time to be announced')
-    await expect(tile).toContainText('Proposed date')
-    await expect(tile).not.toContainText(/\b\d{1,2}:\d{2}\s*(?:am|pm)\b/i)
+  await expect(page.locator('.event-selection-hint, .event-details')).toHaveCount(0)
+  await expect(page.getByRole('combobox', { name: 'Program year', exact: true })).toHaveCount(years.length > 1 ? 1 : 0)
+  await expect(page.locator('.schedule-source')).toContainText('Times are in India Standard Time (IST).')
+  await expect(page.locator('.schedule-source')).not.toContainText(/Last imported|snapshot|spreadsheet/i)
+  if (!schedule.length) await expect(page.getByText('No programs have been listed yet. Please check back for future announcements.')).toBeVisible()
+  for (const year of years) {
+    await selectYear(page, year)
+    const expected = seasonPrograms(year)
+    const season = page.getByRole('region', { name: `${year} season`, exact: true })
+    const list = season.getByRole('list', { name: `Programs for ${year}`, exact: true })
+    await expect(list.getByRole('listitem')).toHaveCount(expected.length)
+    await expect(list.getByRole('button')).toHaveCount(expected.length)
+    await expect(list.locator('.program-title')).toHaveText(expected.map((event) => event.title))
+    await expect(season.getByRole('status')).toContainText(`${expected.length} ${expected.length === 1 ? 'program' : 'programs'}`)
+    for (const event of expected) {
+      const tile = list.getByRole('button', { name: tileName(event), exact: true })
+      await tile.scrollIntoViewIfNeeded()
+      await expect(tile).toBeInViewport()
+      await expect(tile.locator('time')).toHaveAttribute('datetime', programStart(event))
+      await expect(tile.locator('time span')).toHaveText(new Intl.DateTimeFormat('en-IN', { month: 'short', timeZone: 'Asia/Kolkata' }).format(new Date(programStart(event))))
+      await expect(tile.locator('time strong')).toHaveText(programDate(event).slice(-2))
+      await expect(tile.locator('.program-artform')).toHaveText(event.artForm)
+      await expect(tile).toContainText(programDate(event) !== programEndDate(event) ? formatEventRange(event) : event.startsAt ? `${formatTime(event.startsAt)} IST` : 'Time to be announced')
+      if (event.tentative) await expect(tile).toContainText('Proposed date')
+      else await expect(tile.getByText('Proposed date', { exact: true })).toHaveCount(0)
+    }
   }
 })
 
-test('desktop annual grid is compact with at least eight programs above the fold', async ({ page, isMobile }) => {
+test('desktop annual grid stays compact with up to two rows above the fold', async ({ page, isMobile }) => {
   test.skip(isMobile, 'Desktop density requirement')
+  const expected = seasonPrograms(initialYear)
+  test.skip(!expected.length, 'No configured programs to measure')
   await page.setViewportSize({ width: 1440, height: 1000 })
   await page.goto('/#/events')
-  const list = page.getByRole('list', { name: 'Programs for 2027', exact: true })
-  await expect(list.getByRole('button')).toHaveCount(12)
+  const list = page.getByRole('list', { name: `Programs for ${initialYear}`, exact: true })
+  await expect(list.getByRole('button')).toHaveCount(expected.length)
   await page.evaluate(() => document.fonts.ready)
   const layout = await list.evaluate((element) => {
     const tiles = [...element.querySelectorAll('button')].map((tile) => tile.getBoundingClientRect())
@@ -370,29 +464,38 @@ test('desktop annual grid is compact with at least eight programs above the fold
       aboveFold: tiles.filter((tile) => tile.top >= 0 && tile.bottom <= window.innerHeight).length,
     }
   })
-  expect(layout.height, 'All twelve annual tiles fit in a compact grid').toBeLessThanOrEqual(700)
-  expect(layout.columns).toBe(4)
-  expect(layout.aboveFold, 'At least two complete rows are visible without scrolling').toBeGreaterThanOrEqual(8)
+  expect(layout.height, 'Annual tiles retain compact row density').toBeLessThanOrEqual(Math.max(700, Math.ceil(expected.length / 4) * 234))
+  expect(layout.columns).toBe(Math.min(4, expected.length))
+  expect(layout.aboveFold, 'Up to two complete rows are visible without scrolling').toBeGreaterThanOrEqual(Math.min(8, expected.length))
 })
 
 test('music and dance filters retain chronological order and survive the detail return journey', async ({ page }) => {
   await page.goto('/#/events')
-  const season = page.getByRole('region', { name: '2027 season', exact: true })
+  const expectedSeason = seasonPrograms(initialYear)
+  test.skip(!expectedSeason.length, 'No configured programs to filter')
+  const season = page.getByRole('region', { name: `${initialYear} season`, exact: true })
   const filters = season.getByRole('group', { name: 'Filter programs', exact: true })
-  const list = season.getByRole('list', { name: 'Programs for 2027', exact: true })
-  await expect(filters.getByRole('button')).toHaveText(['All programs 12', 'Music 7', 'Dance 5'])
+  const list = season.getByRole('list', { name: `Programs for ${initialYear}`, exact: true })
+  const music = expectedSeason.filter(isMusic)
+  const dance = expectedSeason.filter((event) => !isMusic(event))
+  await expect(filters.getByRole('button')).toHaveText([`All programs ${expectedSeason.length}`, `Music ${music.length}`, `Dance ${dance.length}`])
   for (const [label, expected] of [
-    ['Music 7', schedule.filter((event) => /^(?:Carnatic|Hindustani)/.test(event.title))],
-    ['Dance 5', schedule.filter((event) => /^(?:Bharatanatyam|Kathak)/.test(event.title))],
-    ['All programs 12', schedule],
+    [`Music ${music.length}`, music],
+    [`Dance ${dance.length}`, dance],
+    [`All programs ${expectedSeason.length}`, expectedSeason],
   ] as const) {
     const filter = filters.getByRole('button', { name: label, exact: true })
     await filter.click()
     await expect(filter).toHaveAttribute('aria-pressed', 'true')
     await expect(filters.getByRole('button', { pressed: true })).toHaveCount(1)
+    await expect(season.getByRole('status')).toContainText(`${expected.length} ${expected.length === 1 ? 'program' : 'programs'}`)
+    if (!expected.length) {
+      await expect(list).toHaveCount(0)
+      await expect(season.getByText(/No (music|dance) programs are listed/)).toBeVisible()
+      continue
+    }
     await expect(list.getByRole('button')).toHaveCount(expected.length)
     await expect(list.locator('.program-title')).toHaveText(expected.map((event) => event.title))
-    await expect(season.getByRole('status')).toContainText(`${expected.length} programs`)
     const tile = list.getByRole('button').last()
     await tile.click()
     await expect(page.locator('.event-details h2')).toBeFocused()
@@ -405,29 +508,22 @@ test('music and dance filters retain chronological order and survive the detail 
   }
 })
 
-test('all twelve proposed programs open details above the schedule and return focus to their tiles', async ({ page, isMobile }) => {
+test('all configured programs open details above the schedule and return focus to their tiles', async ({ page }) => {
+  test.skip(!schedule.length, 'No configured programs to open')
   await page.goto('/#/events')
-  const season = page.getByRole('region', { name: '2027 season', exact: true })
-  const list = season.getByRole('list', { name: 'Programs for 2027', exact: true })
-  await expect(page.getByText('Proposed dates / Not confirmed bookings', { exact: true })).toBeVisible()
   for (const event of schedule) {
-    const button = list.getByRole('button', { name: `${event.title}, ${event.dateLabel} | Time to be announced (IST), proposed date`, exact: true })
+    const year = Number(programDate(event).slice(0, 4))
+    await selectYear(page, year)
+    const list = page.getByRole('list', { name: `Programs for ${year}`, exact: true })
+    const button = list.getByRole('button', { name: tileName(event), exact: true })
     await expect(button).toBeVisible()
     await button.click()
-    await expect(page).toHaveURL(new RegExp(`#\\/events\\?event=${event.id}$`))
+    await expect(page).toHaveURL((url) => new URLSearchParams(url.hash.split('?')[1]).get('event') === event.id)
     await expect(button).toHaveAttribute('aria-pressed', 'true')
     await expect(page.getByRole('heading', { name: event.title, exact: true })).toBeFocused()
-    const details = page.getByRole('article', { name: event.title, exact: true })
-    await expect(details.locator('dd')).toHaveText([
-      `${event.dateLabel} | Time to be announced (IST)`,
-      'Venue to be announced',
-    ])
-    await expect(details).toContainText('Proposed date')
-    await expect(details).toContainText(/Artist(?: or troupe)?, time, and venue are to be announced\./)
-    await expect(details).not.toContainText(/sample program|\b\d{1,2}:\d{2}\s*(?:am|pm)\b/i)
+    const details = await expectDetails(page, event)
     expect(await details.evaluate((element) => Boolean(element.compareDocumentPosition(document.getElementById('program-schedule')!) & Node.DOCUMENT_POSITION_FOLLOWING))).toBe(true)
-    if (isMobile) await expect(details.locator('img')).toBeHidden()
-    await expect(list.getByRole('button')).toHaveCount(12)
+    await expect(list.getByRole('button')).toHaveCount(seasonPrograms(year).length)
     await page.getByRole('button', { name: /Back to all programs/ }).click()
     await expect(page).toHaveURL(/#\/events$/)
     await expect(details).toHaveCount(0)
@@ -436,16 +532,67 @@ test('all twelve proposed programs open details above the schedule and return fo
   }
 })
 
-test('each imported program supports a direct deep link without a fabricated time', async ({ page }) => {
+test('each configured program supports a direct deep link with its actual date and time', async ({ page }) => {
+  test.skip(!schedule.length, 'No configured programs for direct deep links')
   for (const event of schedule) {
     await page.goto('about:blank')
-    await page.goto(`/#/events?event=${event.id}`)
-    await expect(page.getByRole('region', { name: '2027 season', exact: true })).toBeVisible()
-    await expect(page.getByRole('list', { name: 'Programs for 2027', exact: true }).getByRole('button')).toHaveCount(12)
-    const details = page.getByRole('article', { name: event.title, exact: true })
-    await expect(details).toContainText(`${event.dateLabel} | Time to be announced (IST)`)
-    await expect(details).toContainText('Proposed date')
-    await expect(details).not.toContainText(/\b\d{1,2}:\d{2}\s*(?:am|pm)\b/i)
+    await page.goto(`/#/events?event=${encodeURIComponent(event.id)}`)
+    const year = Number(programDate(event).slice(0, 4))
+    await expect(page.getByRole('region', { name: `${year} season`, exact: true })).toBeVisible()
+    await expect(page.getByRole('list', { name: `Programs for ${year}`, exact: true }).getByRole('button')).toHaveCount(seasonPrograms(year).length)
+    await expectDetails(page, event)
+  }
+})
+
+test('configured artist links are usable external links without turning unlinked names into links', async ({ page }) => {
+  const withArtists = schedule.filter((event) => event.artists?.length)
+  test.skip(!withArtists.length, 'No artists are configured in events.json')
+  for (const event of withArtists) {
+    await page.goto(`/#/events?event=${encodeURIComponent(event.id)}`)
+    const details = await expectDetails(page, event)
+    const artists = details.locator('.event-artists li')
+    await expect(artists).toHaveCount(event.artists!.length)
+    for (const [index, artist] of event.artists!.entries()) {
+      const item = artists.nth(index)
+      await expect(item).toContainText(artist.name)
+      if (artist.url) {
+        const link = item.getByRole('link')
+        await expect(link).toHaveAttribute('href', artist.url)
+        await expect(link).toHaveAttribute('target', '_blank')
+        await expect(link).toHaveAttribute('rel', 'noopener noreferrer')
+        await expect(link).toHaveAccessibleName(`${artist.name} (opens in a new tab)`)
+      } else {
+        await expect(item.getByRole('link')).toHaveCount(0)
+      }
+    }
+  }
+})
+
+test('configured event photos load with their supplied alternative text', async ({ page }) => {
+  const withPhotos = schedule.filter((event) => event.photo)
+  test.skip(!withPhotos.length, 'No event photos are configured in events.json')
+  for (const event of withPhotos) {
+    await page.goto(`/#/events?event=${encodeURIComponent(event.id)}`)
+    const details = await expectDetails(page, event)
+    const photo = details.getByRole('img', { name: event.photoAlt || `Photo for ${event.title}`, exact: true })
+    await expect(photo).toBeVisible()
+    const actual = new URL((await photo.getAttribute('src'))!, page.url())
+    const expected = new URL(event.photo!.replace(/^\/+/, ''), page.url().split('#')[0])
+    expect(actual.href).toBe(expected.href)
+    await loadImages(page)
+  }
+})
+
+test('configured timed events show their actual start and optional end time', async ({ page }) => {
+  const timed = schedule.filter((event) => event.startsAt)
+  test.skip(!timed.length, 'No event times are configured in events.json')
+  for (const event of timed) {
+    await page.goto(`/#/events?event=${encodeURIComponent(event.id)}`)
+    const details = await expectDetails(page, event)
+    const when = details.locator('dd').first()
+    await expect(when).toContainText(formatTime(event.startsAt!))
+    if (event.endsAt) await expect(when).toContainText(formatTime(event.endsAt))
+    await expect(when).not.toContainText('Time to be announced')
   }
 })
 
@@ -528,15 +675,24 @@ test('production subpath: all hash pages, built assets, and images resolve under
     evidence.push({ route: route.path, url: page.url(), images: imageSources.length })
   }
 
-  await page.goto(`${baseURL}#/`)
-  await page.getByRole('link', { name: 'Details for Carnatic Vocal 1', exact: true }).click()
-  await expect(page).toHaveURL(`${baseURL}#/events?event=calendar-2027-01-23-carnatic-vocal-1`)
-  await expect(page.getByRole('region', { name: '2027 season', exact: true })).toBeVisible()
-  await expect(page.getByRole('article', { name: 'Carnatic Vocal 1', exact: true })).toBeVisible()
-  await loadImages(page)
-  await page.reload()
-  await expect(page.getByRole('article', { name: 'Carnatic Vocal 1', exact: true })).toBeVisible()
-  await loadImages(page)
+  const upcoming = upcomingEvents(events, now)[0]
+  const event = upcoming ?? schedule[0]
+  if (event) {
+    if (upcoming) {
+      await page.goto(`${baseURL}#/`)
+      await page.locator('.event-card').first().getByRole('link', { name: `Details for ${event.title}`, exact: true }).click()
+    } else {
+      await page.goto(`${baseURL}#/events`)
+      await selectYear(page, Number(programDate(event).slice(0, 4)))
+      await page.getByRole('button', { name: tileName(event), exact: true }).click()
+    }
+    await expect(page).toHaveURL((url) => url.href.startsWith(`${baseURL}#/events?`) && new URLSearchParams(url.hash.split('?')[1]).get('event') === event.id)
+    await expectDetails(page, event)
+    await loadImages(page)
+    await page.reload()
+    await expectDetails(page, event)
+    await loadImages(page)
+  }
 
   for (const asset of assets) expect(new URL(asset).pathname).toMatch(/^\/Kalavedike\/assets\//)
   expect(failedRequests, 'No failed requests or HTTP errors in the production build').toEqual([])

@@ -2,10 +2,9 @@ import { useEffect, useRef, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { EventSchedule } from '../components/EventSchedule'
 import { EventDetails } from '../components/EventDetails'
-import { events, eventSource } from '../content/events'
+import { events } from '../content/events'
 import type { Program } from '../content/types'
 import { useNow } from '../lib/useNow'
-import { formatDate } from '../lib/dates'
 
 export function EventsPage() {
   const [params, setParams] = useSearchParams()
@@ -39,11 +38,11 @@ export function EventsPage() {
         <p>Browse the whole season at a glance. Find the music and dance you love, closer to our neighbourhood.</p>
       </section>
       <section className="container events-section">
-        <div className="season-notice"><span className="sample-badge">Proposed dates / Not confirmed bookings</span><p>Artists, times, and venues to be announced.</p></div>
+        {events.some((event) => event.tentative) && <div className="season-notice"><span className="sample-badge">Proposed dates / Not confirmed bookings</span><p>Dates marked as proposed are subject to confirmation. Open a program for available artist, time, and venue details.</p></div>}
         {requestedId && !requestedEvent && <p role="status" className="inline-notice">That program could not be found. Browse the calendar for available listings.</p>}
         {requestedEvent && <div className="selected-program"><button type="button" className="text-link" onClick={closeDetails}>&larr; Back to all programs</button><EventDetails event={requestedEvent} focus={shouldFocus} /></div>}
         <EventSchedule programs={events} now={now} selectedId={requestedEvent?.id} initialEvent={requestedEvent} onSelect={select} />
-        <p className="schedule-source">From our {eventSource.label}. Last imported {formatDate(eventSource.importedAt)}; this is a snapshot, not a live feed.</p>
+        <p className="schedule-source">Times are in India Standard Time (IST). Details not yet available are marked as to be announced.</p>
       </section>
     </>
   )

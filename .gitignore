@@ -16,6 +16,7 @@ test-results
 .env
 .env.*
 !.env.example
+src/content/events.imported.json
 
 # Editor directories and files
 .vscode/*

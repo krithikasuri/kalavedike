@@ -1,0 +1,26 @@
+[
+  {
+    "id": "sponsor-1",
+    "name": "Sponsor name",
+    "bio": "A short introduction to this sponsor and their support for the arts will appear here.",
+    "website": "",
+    "logo": "",
+    "placeholder": true
+  },
+  {
+    "id": "sponsor-2",
+    "name": "Sponsor name",
+    "bio": "A short introduction to this sponsor and their support for the arts will appear here.",
+    "website": "",
+    "logo": "",
+    "placeholder": true
+  },
+  {
+    "id": "sponsor-3",
+    "name": "Sponsor name",
+    "bio": "A short introduction to this sponsor and their support for the arts will appear here.",
+    "website": "",
+    "logo": "",
+    "placeholder": true
+  }
+]

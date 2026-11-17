@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "npm run check:content && tsc -b && vite build",
+    "check:content": "vitest run src/content/content.test.ts",
     "lint": "oxlint",
     "typecheck": "tsc -b",
     "test": "vitest run",

@@ -30,12 +30,12 @@ export function programDate(event: Program): string {
 }
 
 export function programEndDate(event: Program): string {
-  return event.date ?? dateKey(event.endsAt)
+  return event.date ?? dateKey(event.endsAt ?? event.startsAt)
 }
 
 function isUpcoming(event: Program, now: Date) {
-  return event.date !== undefined
-    ? event.date >= dateKey(now)
+  return event.endsAt === undefined
+    ? programDate(event) >= dateKey(now)
     : new Date(event.endsAt).getTime() >= now.getTime()
 }
 
@@ -49,6 +49,7 @@ export function comparePrograms(a: Program, b: Program) {
 
 export function formatEventRange(event: Program) {
   if (event.date !== undefined) return `${formatDate(event.date)} | Time to be announced (IST)`
+  if (!event.endsAt) return `${formatDate(event.startsAt)} | ${formatTime(event.startsAt)} IST`
   return dateKey(event.startsAt) === dateKey(event.endsAt)
     ? `${formatDate(event.startsAt)} | ${formatTime(event.startsAt)} - ${formatTime(event.endsAt)} IST`
     : `${formatDate(event.startsAt)}, ${formatTime(event.startsAt)} - ${formatDate(event.endsAt)}, ${formatTime(event.endsAt)} IST`

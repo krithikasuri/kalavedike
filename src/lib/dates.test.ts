@@ -77,6 +77,15 @@ describe('program collections', () => {
     const dateOnly: Program = { id: 'date-only', title: 'Date only', artForm: 'Carnatic music', date: '2026-12-31', description: '', venue: 'TBA', sample: false }
     expect(upcomingEvents([program, dateOnly], new Date('2026-12-01T00:00:00Z')).map((event) => event.id)).toEqual(['date-only', 'test'])
   })
+
+  it('supports a start time without requiring or inventing an end time', () => {
+    const startOnly: Program = { ...program, endsAt: undefined }
+    expect(formatEventRange(startOnly)).toMatch(/31 December 2026 \| 11:00\s*pm IST/i)
+    expect(upcomingEvents([startOnly], new Date('2026-12-31T23:59:59+05:30'))).toHaveLength(1)
+    expect(pastEvents([startOnly], new Date('2027-01-01T00:00:00+05:30'))).toHaveLength(1)
+    expect(occursOn(startOnly, '2026-12-31')).toBe(true)
+    expect(occursOn(startOnly, '2027-01-01')).toBe(false)
+  })
 })
 
 describe('month calendar calculations', () => {

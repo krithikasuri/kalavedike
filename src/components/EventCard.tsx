@@ -1,15 +1,14 @@
 import { Link } from 'react-router-dom'
 import type { Program } from '../content/types'
-import { artImage } from '../content/site'
 import { formatDate, formatTime, programStart } from '../lib/dates'
-import { Artwork } from './Artwork'
+import { EventArtwork } from './EventArtwork'
 import { ProgramStatus } from './ProgramStatus'
 
 export function EventCard({ event }: { event: Program }) {
   return (
     <article className="event-card">
       <Link to={`/events?event=${encodeURIComponent(event.id)}`} className="event-art-link" aria-label={`View ${event.title}`}>
-        <Artwork src={artImage(event.artForm)} alt={`Face-free ${event.artForm} illustration; sample artwork`} />
+        <EventArtwork event={event} />
         <span className="art-category">{event.artForm}</span>
       </Link>
       <div className="event-card-body">

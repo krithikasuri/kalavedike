@@ -6,6 +6,13 @@ import { about } from './content/about'
 import { site } from './content/site'
 import { trustees } from './content/trustees'
 
+vi.mock('./content/events', async () => ({
+  events: (await import('./test/siteFixtures')).fixtureEvents,
+}))
+vi.mock('./content/sponsors', async () => ({
+  sponsors: (await import('./test/siteFixtures')).fixtureSponsors,
+}))
+
 const firstEventId = 'calendar-2027-01-23-carnatic-vocal-1'
 const originalEmail = site.email
 
@@ -21,7 +28,7 @@ beforeEach(() => {
 afterEach(() => { vi.useRealTimers(); site.email = originalEmail })
 
 describe('Kalavedhike pages', () => {
-  it('shows all art forms and real proposed programs with honest status and no fabricated time', () => {
+  it('shows all art forms and fixture proposed programs with honest status and no fabricated time', () => {
     render(<App />)
     expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Bringing the arts closer to home.')
     for (const name of ['Carnatic music', 'Bharatanatyam', 'Hindustani music', 'Kathak', 'Odissi']) expect(screen.getByRole('heading', { name })).toBeInTheDocument()
@@ -31,7 +38,7 @@ describe('Kalavedhike pages', () => {
     expect(screen.getAllByText('Proposed date')).toHaveLength(3)
     expect(screen.getAllByText(/Time TBA/)).toHaveLength(3)
     expect(screen.queryByText('Sample program')).not.toBeInTheDocument()
-    expect(screen.getByRole('complementary', { name: 'Program and gallery notice' })).toHaveTextContent('not confirmed bookings')
+    expect(screen.getByRole('complementary', { name: 'Program and gallery notice' })).toHaveTextContent('Program details may change. Dates marked as proposed are not confirmed bookings. Visit our Instagram page for photos and updates.')
     expect(screen.getByRole('link', { name: 'Kalavedhike home' }).querySelector('img')).toHaveAttribute('src', expect.stringContaining('assets/branding/instagram-logo.jpg'))
     expect(document.title).toBe('Home | Kalavedhike')
     expect(document.body).not.toHaveTextContent('&nearr;')
@@ -79,6 +86,17 @@ describe('Kalavedhike pages', () => {
     expect(screen.getByRole('link', { name: /@bellezeakalavedike/ })).toHaveAttribute('href', 'https://www.instagram.com/bellezeakalavedike/')
   })
 
+  it('opens the volunteer website guide from the footer with the correct title and focus', async () => {
+    const user = userEvent.setup()
+    render(<App />)
+    await user.click(within(screen.getByRole('navigation', { name: 'Footer navigation' })).getByRole('link', { name: 'Website guide' }))
+    expect(window.location.hash).toBe('#/how-to')
+    expect(document.title).toBe('Website guide | Kalavedhike')
+    expect(screen.getByRole('heading', { level: 1, name: 'Website guide' })).toBeInTheDocument()
+    expect(screen.getByRole('main')).toHaveFocus()
+    expect(screen.getByRole('heading', { name: 'Update sponsors' })).toBeInTheDocument()
+  })
+
   it('renders every supplied About paragraph, offering, section, and signature without fictional trustees', () => {
     window.history.replaceState(null, '', '/#/about')
     render(<App />)
@@ -110,7 +128,7 @@ describe('Kalavedhike pages', () => {
     expect(screen.getByRole('complementary', { name: 'Program and gallery notice' })).not.toHaveTextContent(/Trust copy|trustee profiles|vision/i)
   })
 
-  it('opens the first spreadsheet event and displays its proposed date with time and venue TBA', async () => {
+  it('opens the first fixture event and displays its proposed date with time and venue TBA', async () => {
     const user = userEvent.setup()
     render(<App />)
     await user.click(screen.getByRole('link', { name: 'Details for Carnatic Vocal 1' }))

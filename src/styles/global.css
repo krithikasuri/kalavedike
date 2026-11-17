@@ -204,6 +204,11 @@ p { line-height: 1.8; }
 .details-body dl > div { display: grid; grid-template-columns: 55px 1fr; gap: 12px; margin-bottom: 12px; line-height: 1.7; }
 .details-body dt { font-weight: 600; color: var(--wine); }
 .details-body dd { margin: 0; }
+.details-body, .details-body dd { min-width: 0; overflow-wrap: anywhere; }
+.event-artists { list-style: none; margin: 0; padding: 0; }
+.event-artists li + li { margin-top: 6px; }
+.event-artists a { color: var(--wine); text-decoration: underline; text-underline-offset: 3px; }
+.event-details > img { object-fit: contain; background: var(--paper); }
 .inline-notice { padding: 15px; border-left: 3px solid var(--gold); background: var(--linen); font-size: .85rem; margin-block: 15px; }
 .gallery-section { padding-block: 35px 50px; }
 .gallery-instagram { display: flex; align-items: center; flex-wrap: wrap; gap: 18px; margin-top: 24px; }
@@ -215,6 +220,25 @@ p { line-height: 1.8; }
 .contact-card .text-link, .contact-pending { margin-top: 20px; }
 .contact-card .text-link { max-width: 100%; overflow-wrap: anywhere; }
 .contact-email { display: inline-block; }
+.how-to-guide { padding-block: 30px 55px; display: grid; gap: 24px; }
+.guide-columns { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr)); gap: 24px; align-items: start; }
+.guide-card, .guide-note { padding: clamp(20px, 3vw, 32px); border: 1px solid var(--line); min-width: 0; overflow-wrap: anywhere; }
+.guide-note { background: var(--linen); }
+.how-to-guide h2 { font-size: 2rem; margin-bottom: 20px; }
+.how-to-guide h3 { font-size: 1.6rem; margin-top: 28px; }
+.how-to-guide p, .how-to-guide li, .guide-fields { font-size: .88rem; line-height: 1.85; color: var(--muted); }
+.how-to-guide p + p, .how-to-guide h3 + p { margin-top: 14px; }
+.how-to-guide ol { padding-left: 22px; margin-block: 0 20px; }
+.how-to-guide li + li { margin-top: 14px; }
+.how-to-guide a { color: var(--wine); text-decoration: underline; text-underline-offset: 3px; }
+.how-to-guide code { font-size: .85em; color: var(--wine); }
+.how-to-guide pre { white-space: pre-wrap; overflow-wrap: anywhere; padding: 18px; border: 1px solid var(--line); background: var(--paper); line-height: 1.7; }
+.how-to-guide details { margin-block: 22px; }
+.how-to-guide summary { cursor: pointer; color: var(--wine); font-weight: 600; padding-block: 12px; }
+.guide-fields { margin-block: 24px; }
+.guide-fields > div + div { margin-top: 15px; }
+.guide-fields dt { font-weight: 600; color: var(--wine); }
+.guide-fields dd { margin: 0; }
 .sponsors-section { padding-block: 35px 55px; }
 .sponsors-section h2 { font-size: 2rem; }
 .sponsor-notice { max-width: 760px; margin-top: 16px; color: var(--muted); font-size: .88rem; }
@@ -453,7 +477,7 @@ a.sponsor-card-content:hover { background: var(--linen); }
   .program-tile-bottom .sample-badge { font-size: .56rem; }
   .program-date-note { left: 16px; }
   .selected-program .event-details { grid-template-columns: 1fr; }
-  .selected-program .event-details > img, .selected-program .event-details > .artwork-unavailable { display: none; }
+  .selected-program .event-details > img, .selected-program .event-details > .artwork-unavailable { min-height: 0; height: auto; max-height: 300px; aspect-ratio: 4/3; }
   .event-details { grid-template-columns: 1fr; }
   .event-details > img, .event-details > .artwork-unavailable { min-height: 0; max-height: 250px; aspect-ratio: 4/3; }
   .details-body { padding: 24px 20px; }

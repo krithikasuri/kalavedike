@@ -1,6 +1,7 @@
 /// <reference types="node" />
 import { describe, expect, it } from 'vitest'
-import { events, eventSource } from './events'
+import { events } from './events'
+import { sponsors } from './sponsors'
 import { archiveEvents } from './sampleArchive'
 import { albums } from './gallery'
 import { artForms, artImage, assetUrl, site } from './site'
@@ -9,33 +10,22 @@ import { existsSync } from 'node:fs'
 import { join } from 'node:path'
 
 describe('site content', () => {
-  it('imports all twelve proposed dates from the 2027 spreadsheet without invented times', () => {
-    expect(events).toHaveLength(12)
-    expect(events.map((event) => event.date)).toEqual([
-      '2027-01-23', '2027-02-13', '2027-03-13', '2027-04-10',
-      '2027-05-08', '2027-06-12', '2027-07-10', '2027-08-21',
-      '2027-09-11', '2027-10-16', '2027-11-13', '2027-12-11',
-    ])
-    expect(new Set(events.map((event) => event.id)).size).toBe(12)
+  it('loads the editable calendar and requires every configured photo and sponsor logo to exist', () => {
+    expect(new Set(events.map((event) => event.id)).size).toBe(events.length)
     for (const event of events) {
       expect(event.sample).toBe(false)
-      expect(event.tentative).toBe(true)
-      expect(event.startsAt).toBeUndefined()
-      expect(event.endsAt).toBeUndefined()
-      expect(event.venue).toBe('Venue to be announced')
-      expect(Object.keys(event).sort()).toEqual(['artForm', 'date', 'description', 'id', 'sample', 'tentative', 'title', 'venue'])
+      if (event.photo) expect(existsSync(join(process.cwd(), 'public', event.photo)), `Missing event photo: public/${event.photo}`).toBe(true)
     }
-    expect(Number.isFinite(Date.parse(eventSource.importedAt))).toBe(true)
-    expect(eventSource.mode).toBe('snapshot')
+    for (const sponsor of sponsors) {
+      if (!sponsor.placeholder) expect(existsSync(join(process.cwd(), 'public', sponsor.logo)), `Missing sponsor logo: public/${sponsor.logo}`).toBe(true)
+    }
   })
 
-  it('keeps gallery samples out of the public event calendar', () => {
+  it('retains the separate development gallery archive as explicitly sample-only', () => {
     expect(archiveEvents).toHaveLength(5)
-    const calendarIds = new Set(events.map((event) => event.id))
     for (const event of archiveEvents) {
-      expect(calendarIds.has(event.id)).toBe(false)
       expect(event.sample).toBe(true)
-      if (event.startsAt === undefined) throw new Error('Sample gallery archive uses timed events')
+      if (event.startsAt === undefined || event.endsAt === undefined) throw new Error('Sample gallery archive uses timed events')
       expect(Date.parse(event.startsAt)).toBeLessThan(Date.parse(event.endsAt))
     }
   })

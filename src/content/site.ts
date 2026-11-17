@@ -12,7 +12,7 @@ export const site = {
   vision: 'To create a vibrant cultural space where the richness of Indian classical performing arts is accessible to everyone, right in their neighbourhood.',
   visionCommunity: 'We envision a community where distance is no longer a barrier to experiencing the beauty of music and dance, where artists find an appreciative audience, and where the next generation grows up surrounded by the richness of our artistic heritage.',
   aspiration: 'To bring art closer to people, and people closer to art.',
-  contentNotice: 'All 2027 calendar dates remain proposals, not confirmed bookings. Visit our Instagram page for photos and updates.',
+  contentNotice: 'Program details may change. Dates marked as proposed are not confirmed bookings. Visit our Instagram page for photos and updates.',
 }
 
 export const artForms: { name: ArtForm; image: string; note: string; label: string }[] = [

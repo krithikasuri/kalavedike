@@ -1,23 +1,45 @@
 // @vitest-environment node
 import { describe, expect, it } from 'vitest'
 import { spawnSync } from 'node:child_process'
-import { readFileSync } from 'node:fs'
+import { existsSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
-import { importSheetEvents, parseCsv, parseSheetDate, renderEventsModule } from './sheet-events.mjs'
+import { importSheetEvents, parseCsv, parseSheetDate, renderEventsJson } from './sheet-events.mjs'
 
 const heading = 'Kala Vedike - Calendar of Events 2027,,,,,,,\n"Planning note: All dates and artists are proposals, not confirmed bookings.",,,,,,,\nDate,Month,Performance,Artist / Institution,One-line Description,YouTube Reference,Booking Status / Notes,Approximate amount\n'
 const row = '"Sat, 23 Jan 2027",January,Carnatic Vocal 1,INTERNAL ARTIST,"INTERNAL BIO",https://example.com,INTERNAL NOTES,123456\n'
 
 it('requires a locally configured source without changing the existing snapshot', () => {
-  const destination = new URL('../src/content/events.ts', import.meta.url)
+  const destination = new URL('../src/content/events.json', import.meta.url)
   const before = readFileSync(destination, 'utf8')
   const result = spawnSync(process.execPath, [fileURLToPath(new URL('./sync-events.mjs', import.meta.url))], {
     env: { ...process.env, KALAVEDIKE_EVENTS_CSV_URL: '' },
     encoding: 'utf8',
   })
+
   expect(result.status).not.toBe(0)
   expect(result.stderr).toContain('Set KALAVEDIKE_EVENTS_CSV_URL')
   expect(readFileSync(destination, 'utf8')).toBe(before)
+})
+
+it('stages a successful spreadsheet import without overwriting manually maintained events', () => {
+  const destination = new URL('../src/content/events.json', import.meta.url)
+  const staging = new URL('../src/content/events.imported.json', import.meta.url)
+  const before = readFileSync(destination, 'utf8')
+  const previousImport = existsSync(staging) ? readFileSync(staging, 'utf8') : undefined
+  const setup = `globalThis.fetch = async () => new Response(${JSON.stringify(heading + row)}, { headers: { 'content-type': 'text/csv' } });`
+  try {
+    const result = spawnSync(process.execPath, ['--import', `data:text/javascript,${encodeURIComponent(setup)}`, fileURLToPath(new URL('./sync-events.mjs', import.meta.url))], {
+      env: { ...process.env, KALAVEDIKE_EVENTS_CSV_URL: 'https://example.com/events.csv' },
+      encoding: 'utf8',
+    })
+    expect(result.status, result.stderr).toBe(0)
+    expect(result.stdout).toContain('have not been overwritten')
+    expect(readFileSync(destination, 'utf8')).toBe(before)
+    expect(JSON.parse(readFileSync(staging, 'utf8'))).toHaveLength(1)
+  } finally {
+    if (previousImport !== undefined) writeFileSync(staging, previousImport)
+    else rmSync(staging, { force: true })
+  }
 })
 
 describe('spreadsheet CSV reader', () => {
@@ -54,9 +76,11 @@ describe('public event whitelist', () => {
       sample: false,
       tentative: true,
     }])
-    const module = renderEventsModule(programs, '2026-11-17T05:30:00Z')
+    const module = renderEventsJson(programs)
     expect(module).not.toMatch(/INTERNAL|123456|https:|startsAt|endsAt/)
-    expect(module).toContain('"mode": "snapshot"')
+    expect(JSON.parse(module)).toEqual([{
+      ...programs[0], sample: undefined, time: '', endTime: '', artists: [], photo: '', photoAlt: '',
+    }])
   })
 
   it('preserves stable IDs when source rows are reordered and sanitises internal performance suffixes', () => {

@@ -8,10 +8,13 @@ interface ProgramDetails {
   description: string
   sample: boolean
   tentative?: boolean
+  artists?: { name: string; url?: string }[]
+  photo?: string
+  photoAlt?: string
 }
 
 export type Program = ProgramDetails & (
-  | { startsAt: string; endsAt: string; date?: never }
+  | { startsAt: string; endsAt?: string; date?: never }
   | { date: string; startsAt?: never; endsAt?: never }
 )
 
