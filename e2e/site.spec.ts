@@ -8,6 +8,7 @@ const routes = [
   { path: '/about', label: 'About us', title: 'About the trust' },
   { path: '/events', label: 'Events', title: 'Events' },
   { path: '/gallery', label: 'Gallery', title: 'Gallery' },
+  { path: '/sponsors', label: 'Sponsors', title: 'Sponsors' },
   { path: '/contact', label: 'Contact us', title: 'Contact us' },
 ] as const
 const schedule = [
@@ -116,14 +117,72 @@ test('home presents the official community tagline and complete approved vision'
   await expect(page.getByRole('heading', { level: 1, name: 'About Kalavedhike', exact: true })).toBeVisible()
 })
 
-test('expanded header navigation fits tablet widths with the contact link', async ({ page, isMobile }) => {
+test('expanded header navigation fits above the compact menu breakpoint', async ({ page, isMobile }) => {
   test.skip(isMobile, 'Exercise expanded navigation in the desktop browser')
-  for (const width of [801, 1024]) {
+  for (const width of [1001, 1100]) {
     await page.setViewportSize({ width, height: 900 })
     await page.goto('/#/contact')
     await expect(page.getByRole('navigation', { name: 'Main navigation' }).getByRole('link', { name: 'Contact us', exact: true })).toBeVisible()
     expect(await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth)).toBeLessThanOrEqual(1)
   }
+})
+
+test('compact header navigation includes sponsors at tablet widths', async ({ page, isMobile }) => {
+  test.skip(isMobile, 'Exercise the desktop browser at tablet widths')
+  for (const width of [801, 1000]) {
+    await page.setViewportSize({ width, height: 900 })
+    await page.goto('/#/')
+    const menu = page.getByRole('button', { name: /^Menu/ })
+    await expect(menu).toBeVisible()
+    await menu.click()
+    await page.getByRole('navigation', { name: 'Main navigation' }).getByRole('link', { name: 'Sponsors', exact: true }).click()
+    await expect(page).toHaveURL(/#\/sponsors$/)
+    await expect(menu).toHaveAttribute('aria-expanded', 'false')
+    expect(await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth)).toBeLessThanOrEqual(1)
+  }
+})
+
+test('sponsors page keeps logo slots blank and does not invent active sponsor websites', async ({ page }, testInfo) => {
+  await page.goto('/#/sponsors')
+  const main = page.getByRole('main')
+  await expect(page).toHaveTitle('Sponsors | Kalavedhike')
+  await expect(main.getByRole('heading', { level: 1, name: 'Our sponsors', exact: true })).toBeVisible()
+  await expect(main.getByText(/not confirmed sponsors/)).toBeVisible()
+  await expect(main.locator('.sponsor-card')).toHaveCount(3)
+  await expect(main.getByRole('img', { name: 'Blank sponsor logo placeholder', exact: true })).toHaveCount(3)
+  await expect(main.locator('img, .sponsor-card a')).toHaveCount(0)
+  await expect(main.getByText('Website to be added', { exact: true })).toHaveCount(3)
+  const path = join(artifacts, `kalavedike-sponsors-${testInfo.project.name}.png`)
+  await page.screenshot({ path, fullPage: true, animations: 'disabled' })
+  await testInfo.attach('Sponsor placeholder page', { path, contentType: 'image/png' })
+  await main.getByRole('link', { name: /Get in touch about sponsorship/ }).click()
+  await expect(page).toHaveURL(/#\/contact$/)
+})
+
+test('home testimonial carousel supports controls, selectors and keyboard navigation', async ({ page }, testInfo) => {
+  await page.goto('/#/')
+  const carousel = page.getByRole('region', { name: 'Voices from our community.', exact: true })
+  await expect(carousel).toHaveAttribute('aria-roledescription', 'carousel')
+  await expect(carousel.getByText('Placeholder testimonial', { exact: true })).toBeVisible()
+  await expect(carousel.getByText(/not actual quotes or endorsements/)).toBeVisible()
+  await expect(carousel.getByRole('group', { name: '1 of 3', exact: true })).toBeVisible()
+  await carousel.getByRole('button', { name: 'Previous testimonial', exact: true }).click()
+  await expect(carousel.getByRole('group', { name: '3 of 3', exact: true })).toBeVisible()
+  await carousel.getByRole('button', { name: 'Next testimonial', exact: true }).click()
+  await expect(carousel.getByRole('group', { name: '1 of 3', exact: true })).toBeVisible()
+  const second = carousel.getByRole('button', { name: 'Show testimonial 2', exact: true })
+  await second.click()
+  await expect(second).toHaveAttribute('aria-current', 'true')
+  await expect(carousel.getByRole('group', { name: '2 of 3', exact: true })).toBeVisible()
+  await page.keyboard.press('ArrowRight')
+  await expect(carousel.getByRole('group', { name: '3 of 3', exact: true })).toBeVisible()
+  await expect(second).toBeFocused()
+  await page.keyboard.press('ArrowLeft')
+  await expect(carousel.getByRole('group', { name: '2 of 3', exact: true })).toBeVisible()
+  await expect(carousel.locator('[aria-roledescription="slide"]')).toHaveCount(1)
+  const path = join(artifacts, `kalavedike-testimonials-${testInfo.project.name}.png`)
+  await carousel.screenshot({ path, animations: 'disabled', style: '.skip-link { visibility: hidden; }' })
+  await testInfo.attach('Home testimonial carousel', { path, contentType: 'image/png' })
 })
 
 test('about renders the full approved story, vision, offerings, community and supplied trustees', async ({ page }, testInfo) => {

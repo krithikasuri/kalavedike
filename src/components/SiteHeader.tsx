@@ -2,7 +2,7 @@ import { useRef, useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { assetUrl, site } from '../content/site'
 
-const links = [{ to: '/', label: 'Home' }, { to: '/about', label: 'About us' }, { to: '/events', label: 'Events' }, { to: '/gallery', label: 'Gallery' }, { to: '/contact', label: 'Contact us' }]
+const links = [{ to: '/', label: 'Home' }, { to: '/about', label: 'About us' }, { to: '/events', label: 'Events' }, { to: '/gallery', label: 'Gallery' }, { to: '/sponsors', label: 'Sponsors' }, { to: '/contact', label: 'Contact us' }]
 
 export function SiteHeader() {
   const [expandedAt, setExpandedAt] = useState<string | null>(null)

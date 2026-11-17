@@ -14,7 +14,7 @@ npm ci
 npm run dev
 ```
 
-Open the URL Vite prints. The five pages are `/#/`, `/#/about`, `/#/events`, `/#/gallery`, and `/#/contact`.
+Open the URL Vite prints. The six pages are `/#/`, `/#/about`, `/#/events`, `/#/gallery`, `/#/sponsors`, and `/#/contact`.
 
 ```powershell
 npm test
@@ -35,11 +35,12 @@ The browser runner starts its own development server on port 4178, builds the pr
 
 ## Pages
 
-- **Home:** the approved community-focused vision, time-aware upcoming/ongoing programs, and artwork representing Carnatic music, Bharatanatyam, Hindustani music, Kathak, and Odissi.
+- **Home:** the approved community-focused vision, time-aware upcoming/ongoing programs, artwork representing the five classical art forms, and a manually controlled testimonial carousel.
 - **About:** the supplied founding story, full vision, art forms, community purpose, and invitation to join the journey. Five named trustees have face-free photo placeholders and mission-based introductions; individual biographies are not invented.
 - **Events:** compact, chronological season overview showing every listed program without empty calendar days. Music/Dance filters include program counts; a year selector appears only when multiple seasons are available. The same event list adapts from desktop cards to mobile rows. A direct program link looks like `/#/events?event=calendar-2027-01-23-carnatic-vocal-1`.
 - **Gallery:** a direct Instagram action for photos and updates. No placeholder thumbnails, fictional albums, art-form filters, or sample descriptions are displayed.
 - **Contact us:** questions about Kalavedhike and its programs, an email link when configured, and the Instagram contact option. Linked from both header and footer.
+- **Sponsors:** three clearly labelled placeholder spaces with blank logo areas and inactive website text. No sponsor affiliation or external website is invented.
 
 ## Calendar data from Google Sheets
 
@@ -74,6 +75,10 @@ The gallery is Instagram-only for now: no sample imagery, fictional event record
 
 The contact email has not been supplied. Set `site.email` in `src\content\site.ts` to the confirmed public email address to enable the visible `mailto:` link automatically. Until then, the Contact Us page explicitly says the email address has not been published and provides Instagram instead; no address is guessed.
 
+Sponsor and testimonial content is intentionally placeholder-only. Update `src\content\sponsors.ts` with confirmed sponsor data: set `placeholder: false` and provide an approved name/description, an HTTPS `website`, and a local `logo` asset path. The whole sponsor card, including its logo, then becomes a secure new-tab website link. Placeholder records deliberately have neither fake URLs nor logo images; the shared type requires both for confirmed sponsors.
+
+Update `src\content\testimonials.ts` with approved quotes, attribution names and context; set `placeholder: false` only after approval. Current text describes where future testimonials will appear and is explicitly not presented as an actual endorsement. The carousel shows one item at a time, wraps with previous/next buttons, supports slide selectors and left/right arrow keys, and never auto-rotates. Empty and single-item collections do not display dead navigation controls.
+
 The user confirmed permission to reuse selected material from [@bellezeakalavedike](https://www.instagram.com/bellezeakalavedike/). The logo was downloaded from the profile's public Open Graph image metadata on 17 November 2026 and stored locally as `public\assets\branding\instagram-logo.jpg`. It is a small 150-by-150-pixel JPEG with a stylized orange instrument/letterform on black and no artist faces. The header, footer, and favicon use this logo; the floral medallion elsewhere is original decoration, not a substitute logo. A high-resolution original can replace the small profile image later.
 
 The supplied trustees are Pallavi K Srinivasa, Roopa Sreedharan Madampath, Krithika Surianarayanan, Shanthi Naresh, and Tarini Basavaraju. `trustees.ts` maintains their names and Trustee role. Current introductions state that role and describe the trust's approved shared mission, not personal backgrounds or specialist responsibilities. Photos use labelled initials placeholders; replace the introductions with approved individual biographies when supplied. Actual trustee photos and event imagery have not been supplied. Use permitted files or directly accessible asset links; do not scrape Instagram, hotlink expiring CDN URLs, or use account credentials.
@@ -87,6 +92,8 @@ Keep **all imagery free of artist faces**, including trustee cards and gallery m
 | `site.ts` | Display name/logo, tagline/signature, Instagram link, contact email, approved full vision, program/gallery notice, art-form definitions, local asset helpers |
 | `about.ts` | Complete approved About narrative and performing-art offerings |
 | `trustees.ts` | Five supplied trustee names, Trustee roles, and mission-based introductory paragraphs |
+| `sponsors.ts` | Placeholder sponsor slots; confirmed entries require an HTTPS website and local logo |
+| `testimonials.ts` | Clearly labelled testimonial placeholders, or approved quotes and attributions |
 | `events.ts` | Generated spreadsheet snapshot used by Home and Events; refresh with `npm run sync:events` |
 | `sampleArchive.ts` | Archived fictional development records; not rendered by the current gallery |
 | `gallery.ts` | Archived sample album metadata; not rendered by the current gallery |
@@ -135,7 +142,7 @@ The intended primary domain is **www.kalavedike.co.in**, with the bare domain re
 | CNAME | `www` | `<owner>.github.io` |
 
 4. Replace only conflicting website records. Review old AAAA/forwarding settings for conflicts; preserve MX/TXT mail records and unrelated services. Do not add a wildcard or use GoDaddy domain forwarding.
-5. After GitHub accepts the DNS configuration and provisions its certificate, enable **Enforce HTTPS**. Confirm both hostnames, their redirect, all five routes, images, and event deep links.
+5. After GitHub accepts the DNS configuration and provisions its certificate, enable **Enforce HTTPS**. Confirm both hostnames, their redirect, all six routes, images, and event deep links.
 
 The custom domain is configured in repository settings; a `CNAME` file is not required for this Actions-based workflow. GitHub provides HTTPS, so this setup needs neither GoDaddy web hosting nor a separate SSL purchase. Follow [GitHub's custom-domain documentation](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site).
 

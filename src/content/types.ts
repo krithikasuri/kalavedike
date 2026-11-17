@@ -35,3 +35,20 @@ export interface Trustee {
   bio: string
   sample: boolean
 }
+
+export type Sponsor = {
+  id: string
+  name: string
+  description: string
+} & (
+  | { placeholder: true; website?: never; logo?: never }
+  | { placeholder: false; website: `https://${string}`; logo: string }
+)
+
+export interface Testimonial {
+  id: string
+  quote: string
+  name: string
+  context: string
+  placeholder: boolean
+}

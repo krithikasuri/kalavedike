@@ -4,7 +4,7 @@ import { SiteHeader } from './SiteHeader'
 import { SiteFooter } from './SiteFooter'
 import { site } from '../content/site'
 
-const pageTitles: Record<string, string> = { '/': 'Home', '/about': 'About the trust', '/events': 'Events', '/gallery': 'Gallery', '/contact': 'Contact us' }
+const pageTitles: Record<string, string> = { '/': 'Home', '/about': 'About the trust', '/events': 'Events', '/gallery': 'Gallery', '/contact': 'Contact us', '/sponsors': 'Sponsors' }
 
 export function SiteLayout() {
   const location = useLocation()

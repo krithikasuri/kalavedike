@@ -6,6 +6,8 @@ import { useNow } from '../lib/useNow'
 import { Artwork } from '../components/Artwork'
 import { EventCard } from '../components/EventCard'
 import { VisionStatement } from '../components/VisionStatement'
+import { TestimonialsCarousel } from '../components/TestimonialsCarousel'
+import { testimonials } from '../content/testimonials'
 
 export function HomePage() {
   const programs = upcomingEvents(events, useNow()).slice(0, 3)
@@ -51,6 +53,7 @@ export function HomePage() {
       <section className="gallery-teaser">
         <div className="container gallery-teaser-grid"><div className="teaser-art"><Artwork src={artImage('Bharatanatyam')} alt="Bharatanatyam-inspired pleats, bells, and decorative forms; original illustration" /></div><div><p className="eyebrow">More than a performance venue</p><h2>A community,<br />connected by <em>art.</em></h2><p>Find photos and updates on our Instagram page. Follow Kalavedhike as we bring music, dance, and our neighbourhood community closer together.</p><Link to="/gallery" className="button button-outline">Explore the gallery <span aria-hidden="true">&#8599;</span></Link></div></div>
       </section>
+      <TestimonialsCarousel testimonials={testimonials} />
     </>
   )
 }
