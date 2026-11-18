@@ -39,7 +39,7 @@ export function HowToPage() {
       <div className="container how-to-guide">
         <section className="guide-note" aria-labelledby="guide-start">
           <h2 id="guide-start">Before you start</h2>
-          <p>Sign in to GitHub with an account that can edit the Kalavedhike website. GitHub is where our website files are kept. If you cannot see an edit button, ask the website owner for access.</p>
+          <p>Sign in to GitHub with an account that can edit the Kalavedike website. GitHub is where our website files are kept. If you cannot see an edit button, ask the website owner for access.</p>
           <p>You will edit two simple lists called <strong>events.json</strong> and <strong>sponsors.json</strong>. Think of each entry as a small form: change the words inside the quotation marks, not the field names on the left. This guide is public; it does not give visitors permission to edit.</p>
         </section>
 

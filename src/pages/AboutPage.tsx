@@ -15,7 +15,7 @@ export function AboutPage() {
         <p>{about.subtitle}</p>
       </section>
 
-      <section className="about-story container" aria-label="Why Kalavedhike began">
+      <section className="about-story container" aria-label="Why Kalavedike began">
         <div className="about-art">
           <Artwork src={artImage('Odissi')} alt="Face-free Odissi-inspired artwork with flowing lines and temple motifs" eager />
           <span className="image-footnote">Original illustration inspired by our classical traditions</span>

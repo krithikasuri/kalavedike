@@ -27,7 +27,7 @@ beforeEach(() => {
 })
 afterEach(() => { vi.useRealTimers(); site.email = originalEmail })
 
-describe('Kalavedhike pages', () => {
+describe('Kalavedike pages', () => {
   it('shows all art forms and fixture proposed programs with honest status and no fabricated time', () => {
     render(<App />)
     expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Bringing the arts closer to home.')
@@ -39,8 +39,8 @@ describe('Kalavedhike pages', () => {
     expect(screen.getAllByText(/Time TBA/)).toHaveLength(3)
     expect(screen.queryByText('Sample program')).not.toBeInTheDocument()
     expect(screen.getByRole('complementary', { name: 'Program and gallery notice' })).toHaveTextContent('Program details may change. Dates marked as proposed are not confirmed bookings. Visit our Instagram page for photos and updates.')
-    expect(screen.getByRole('link', { name: 'Kalavedhike home' }).querySelector('img')).toHaveAttribute('src', expect.stringContaining('assets/branding/instagram-logo.jpg'))
-    expect(document.title).toBe('Home | Kalavedhike')
+    expect(screen.getByRole('link', { name: 'Kalavedike home' }).querySelector('img')).toHaveAttribute('src', expect.stringContaining('assets/branding/instagram-logo.jpg'))
+    expect(document.title).toBe('Home | Kalavedike')
     expect(document.body).not.toHaveTextContent('&nearr;')
     expect(screen.getByRole('link', { name: 'Details for Carnatic Vocal 1' })).toHaveTextContent('\u2197')
     expect(document.body).not.toHaveTextContent('150000')
@@ -52,7 +52,7 @@ describe('Kalavedhike pages', () => {
     render(<App />)
     const nav = within(screen.getByRole('navigation', { name: 'Main navigation' }))
     await user.click(nav.getByRole('link', { name: 'About us' }))
-    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('About Kalavedhike')
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('About Kalavedike')
     expect(screen.getByRole('main')).toHaveFocus()
     expect(nav.getByRole('link', { name: 'About us' })).toHaveAttribute('aria-current', 'page')
     expect(screen.queryByText('Sample profile')).not.toBeInTheDocument()
@@ -62,7 +62,7 @@ describe('Kalavedhike pages', () => {
     expect(screen.getByRole('link', { name: 'View on Instagram (opens in a new tab)' })).toBeInTheDocument()
     await user.click(nav.getByRole('link', { name: 'Sponsors' }))
     expect(screen.getByRole('heading', { level: 1, name: 'Our sponsors' })).toBeInTheDocument()
-    expect(document.title).toBe('Sponsors | Kalavedhike')
+    expect(document.title).toBe('Sponsors | Kalavedike')
     expect(within(screen.getByRole('main')).getAllByRole('article')).toHaveLength(3)
     expect(within(screen.getByRole('main')).queryByRole('link', { name: /Visit .* website/ })).not.toBeInTheDocument()
     expect(screen.getByText(/not confirmed sponsors/)).toBeInTheDocument()
@@ -71,7 +71,7 @@ describe('Kalavedhike pages', () => {
     expect(screen.getByRole('heading', { level: 1, name: 'Contact us' })).toBeInTheDocument()
     expect(nav.getByRole('link', { name: 'Contact us' })).toHaveAttribute('aria-current', 'page')
     expect(screen.getByRole('main')).toHaveFocus()
-    expect(document.title).toBe('Contact us | Kalavedhike')
+    expect(document.title).toBe('Contact us | Kalavedike')
     expect(within(screen.getByRole('navigation', { name: 'Footer navigation' })).getByRole('link', { name: 'Contact us' })).toHaveAttribute('href', '#/contact')
   })
 
@@ -82,7 +82,7 @@ describe('Kalavedhike pages', () => {
     expect(main.getByText(site.visionCommunity)).toBeInTheDocument()
     expect(main.getByText((_, element) => element?.tagName === 'P' && element.textContent === `Our aspiration is simple: ${site.aspiration}`)).toBeInTheDocument()
     expect(main.queryByText('Illustrative vision statement')).not.toBeInTheDocument()
-    expect(document.body).not.toHaveTextContent('Kalavedike')
+    expect(document.body).not.toHaveTextContent(/Kalaved[h]ike/i)
     expect(screen.getByRole('link', { name: /@bellezeakalavedike/ })).toHaveAttribute('href', 'https://www.instagram.com/bellezeakalavedike/')
   })
 
@@ -91,7 +91,7 @@ describe('Kalavedhike pages', () => {
     render(<App />)
     await user.click(within(screen.getByRole('navigation', { name: 'Footer navigation' })).getByRole('link', { name: 'Website guide' }))
     expect(window.location.hash).toBe('#/how-to')
-    expect(document.title).toBe('Website guide | Kalavedhike')
+    expect(document.title).toBe('Website guide | Kalavedike')
     expect(screen.getByRole('heading', { level: 1, name: 'Website guide' })).toBeInTheDocument()
     expect(screen.getByRole('main')).toHaveFocus()
     expect(screen.getByRole('heading', { name: 'Update sponsors' })).toBeInTheDocument()

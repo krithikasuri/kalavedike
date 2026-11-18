@@ -13,7 +13,7 @@ export function ContactPage() {
       <div className="container contact-section">
         <section className="contact-card" aria-labelledby="contact-email-title">
           <h2 id="contact-email-title">Write to us</h2>
-          <p>For questions about Kalavedhike and our programs.</p>
+          <p>For questions about Kalavedike and our programs.</p>
           {email
             ? <a className="text-link contact-email" href={`mailto:${email}`}>{email}</a>
             : <p className="contact-pending">Our email address has not been published yet. In the meantime, you can reach us on Instagram.</p>}

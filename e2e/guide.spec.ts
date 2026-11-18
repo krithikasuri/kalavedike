@@ -5,7 +5,7 @@ for (const prefix of ['', 'production subpath: ']) {
     await page.goto('./#/')
     await page.getByRole('navigation', { name: 'Footer navigation' }).getByRole('link', { name: 'Website guide', exact: true }).click()
     await expect(page).toHaveURL(/#\/how-to$/)
-    await expect(page).toHaveTitle('Website guide | Kalavedhike')
+    await expect(page).toHaveTitle('Website guide | Kalavedike')
     await expect(page.getByRole('heading', { level: 1, name: 'Website guide', exact: true })).toBeVisible()
     await expect(page.getByRole('main')).toBeFocused()
     await page.getByText('Show an event example', { exact: true }).click()

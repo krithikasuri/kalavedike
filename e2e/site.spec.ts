@@ -109,8 +109,9 @@ test('all pages are reachable through hash navigation and the responsive menu', 
     }
     await navigation.getByRole('link', { name: route.label, exact: true }).click()
     await expect(page).toHaveURL(new RegExp(`#${route.path}$`))
-    await expect(page).toHaveTitle(`${route.title} | Kalavedhike`)
-    await expect(page.getByRole('banner').getByRole('link', { name: 'Kalavedhike home', exact: true })).toBeVisible()
+    await expect(page).toHaveTitle(`${route.title} | Kalavedike`)
+    await expect(page.getByRole('banner').getByRole('link', { name: 'Kalavedike home', exact: true })).toBeVisible()
+    await expect(page.locator('body')).not.toContainText(/Kalaved[h]ike/i)
     await expect(page.getByRole('contentinfo').getByRole('link', { name: /@bellezeakalavedike/ })).toHaveAttribute('href', 'https://www.instagram.com/bellezeakalavedike/')
     const notice = page.getByRole('complementary', { name: 'Program and gallery notice' })
     await expect(notice).toContainText('Program details may change. Dates marked as proposed are not confirmed bookings. Visit our Instagram page for photos and updates.')
@@ -130,9 +131,10 @@ test('home presents the official community tagline and complete approved vision'
   const vision = page.getByRole('region', { name: /Art closer to people\.\s*People closer to art\./ })
   await expect(vision.locator('.vision-statement p')).toHaveText(approvedVision)
   await expect(page.getByRole('contentinfo')).toContainText('Celebrating Tradition. Building Community. Bringing Art Closer to Home.')
-  await page.getByRole('link', { name: /Discover Kalavedhike/ }).click()
+  await expect(page).toHaveTitle('Home | Kalavedike')
+  await page.getByRole('link', { name: /Discover Kalavedike/ }).click()
   await expect(page).toHaveURL(/#\/about$/)
-  await expect(page.getByRole('heading', { level: 1, name: 'About Kalavedhike', exact: true })).toBeVisible()
+  await expect(page.getByRole('heading', { level: 1, name: 'About Kalavedike', exact: true })).toBeVisible()
 })
 
 test('expanded header navigation fits above the compact menu breakpoint', async ({ page, isMobile }) => {
@@ -163,7 +165,7 @@ test('compact header navigation includes sponsors at tablet widths', async ({ pa
 test('sponsors page reflects configured records and only links confirmed sponsors', async ({ page }, testInfo) => {
   await page.goto('/#/sponsors')
   const main = page.getByRole('main')
-  await expect(page).toHaveTitle('Sponsors | Kalavedhike')
+  await expect(page).toHaveTitle('Sponsors | Kalavedike')
   await expect(main.getByRole('heading', { level: 1, name: 'Our sponsors', exact: true })).toBeVisible()
   expect(sponsors).toHaveLength(sponsorRecords.length)
   await expect(main.locator('.sponsor-card')).toHaveCount(sponsors.length)
@@ -275,10 +277,10 @@ test('home testimonial carousel supports controls, selectors and keyboard naviga
 test('about renders the full approved story, vision, offerings, community and supplied trustees', async ({ page }, testInfo) => {
   await page.goto('/#/about')
   const main = page.getByRole('main')
-  await expect(main.getByRole('heading', { level: 1, name: 'About Kalavedhike', exact: true })).toBeVisible()
+  await expect(main.getByRole('heading', { level: 1, name: 'About Kalavedike', exact: true })).toBeVisible()
   await expect(main.getByText('Bringing the Arts Closer to Home', { exact: true })).toBeVisible()
   await expect(main.getByText(about.subtitle, { exact: true })).toBeVisible()
-  const introduction = main.getByRole('region', { name: 'Why Kalavedhike began' })
+  const introduction = main.getByRole('region', { name: 'Why Kalavedike began' })
   for (const paragraph of about.introduction) {
     await expect(introduction.getByText(paragraph, { exact: true })).toBeVisible()
   }
@@ -306,7 +308,7 @@ test('about renders the full approved story, vision, offerings, community and su
   await expect(offerings.getByRole('listitem')).toHaveText(about.offerings)
   await expect(offerings.getByText(about.offeringsConclusion, { exact: true })).toBeVisible()
   const trusteeSection = main.getByRole('region', { name: 'Meet our trustees.', exact: true })
-  await expect(trusteeSection).toContainText('The founding members form the trust that guides Kalavedhike')
+  await expect(trusteeSection).toContainText('The founding members form the trust that guides Kalavedike')
   await expect(trusteeSection).toContainText('Individual biographies and photographs will be added when available.')
   await expect(trusteeSection.locator('.trustee-card')).toHaveCount(5)
   for (const name of ['Pallavi K Srinivasa', 'Roopa Sreedharan Madampath', 'Krithika Surianarayanan', 'Shanthi Naresh', 'Tarini Basavaraju']) {
@@ -314,7 +316,7 @@ test('about renders the full approved story, vision, offerings, community and su
     await expect(card.getByRole('heading', { name, exact: true })).toBeVisible()
     await expect(card.getByRole('img', { name: `Photo placeholder for ${name}`, exact: true })).toBeVisible()
     await expect(card.getByText('Photo to follow', { exact: true })).toBeVisible()
-    await expect(card).toContainText(`${name} is a trustee of Kalavedhike.`)
+    await expect(card).toContainText(`${name} is a trustee of Kalavedike.`)
     await expect(card.locator('img')).toHaveCount(0)
     await expect(card).not.toContainText('Sample profile')
   }
@@ -374,7 +376,7 @@ test('contact page is reachable from the footer and honestly identifies the unpu
   await page.goto('/#/gallery')
   await page.getByRole('navigation', { name: 'Footer navigation' }).getByRole('link', { name: 'Contact us', exact: true }).click()
   await expect(page).toHaveURL(/#\/contact$/)
-  await expect(page).toHaveTitle('Contact us | Kalavedhike')
+  await expect(page).toHaveTitle('Contact us | Kalavedike')
   const main = page.getByRole('main')
   await expect(main.getByRole('heading', { level: 1, name: 'Contact us', exact: true })).toBeVisible()
   await expect(main.getByRole('heading', { name: 'Write to us', exact: true })).toBeVisible()
@@ -661,7 +663,8 @@ test('production subpath: all hash pages, built assets, and images resolve under
     const response = await page.goto(`${baseURL}#${route.path}`)
     expect(response?.status()).toBe(200)
     expect(await response!.text()).not.toContain('/@vite/client')
-    await expect(page).toHaveTitle(`${route.title} | Kalavedhike`)
+    await expect(page).toHaveTitle(`${route.title} | Kalavedike`)
+    await expect(page.locator('body')).not.toContainText(/Kalaved[h]ike/i)
     await expect(page.getByRole('main').getByRole('heading', { level: 1 })).toBeVisible()
     await expect(page.locator('script[src]')).toHaveAttribute('src', /^\.\/assets\/index-[\w-]+\.js$/)
     await loadImages(page)

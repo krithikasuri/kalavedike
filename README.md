@@ -1,8 +1,8 @@
-# Kalavedhike
+# Kalavedike
 
 A standalone, English-language website for an Indian performing-arts trust bringing classical arts closer to Sarjapur Road and surrounding neighbourhoods in Bengaluru. Built with React, TypeScript, and Vite, with local content and no backend.
 
-The public brand is **Kalavedhike**, with the tagline **Bringing the Arts Closer to Home**. The existing project directory, package identifier, example static-host subpath, and Instagram handle retain their original spelling for compatibility.
+The public brand is **Kalavedike**, with the tagline **Bringing the Arts Closer to Home**. The project directory, package identifier, example static-host subpath, and Instagram handle use the same spelling.
 
 ## Run locally
 
@@ -41,7 +41,7 @@ The browser runner starts its own development server on port 4178, builds the pr
 - **About:** the supplied founding story, full vision, art forms, community purpose, and invitation to join the journey. Five named trustees have face-free photo placeholders and mission-based introductions; individual biographies are not invented.
 - **Events:** compact, chronological season overview showing every listed program without empty calendar days. Music/Dance filters include program counts; a year selector appears only when multiple seasons are available. The same event list adapts from desktop cards to mobile rows. A direct program link looks like `/#/events?event=calendar-2027-01-23-carnatic-vocal-1`.
 - **Gallery:** a direct Instagram action for photos and updates. No placeholder thumbnails, fictional albums, art-form filters, or sample descriptions are displayed.
-- **Contact us:** questions about Kalavedhike and its programs, an email link when configured, and the Instagram contact option. Linked from both header and footer.
+- **Contact us:** questions about Kalavedike and its programs, an email link when configured, and the Instagram contact option. Linked from both header and footer.
 - **Sponsors:** three clearly labelled placeholder spaces with blank logo areas and inactive website text. No sponsor affiliation or external website is invented.
 
 ## Easy content updates: edit two JSON files

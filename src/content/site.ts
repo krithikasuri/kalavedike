@@ -1,7 +1,7 @@
 import type { ArtForm } from './types'
 
 export const site = {
-  name: 'Kalavedhike',
+  name: 'Kalavedike',
   tagline: 'Bringing the Arts Closer to Home',
   shortTagline: 'Arts closer to home',
   signature: 'Celebrating Tradition. Building Community. Bringing Art Closer to Home.',

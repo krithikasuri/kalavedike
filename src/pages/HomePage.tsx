@@ -51,7 +51,7 @@ export function HomePage() {
       </section>
 
       <section className="gallery-teaser">
-        <div className="container gallery-teaser-grid"><div className="teaser-art"><Artwork src={artImage('Bharatanatyam')} alt="Bharatanatyam-inspired pleats, bells, and decorative forms; original illustration" /></div><div><p className="eyebrow">More than a performance venue</p><h2>A community,<br />connected by <em>art.</em></h2><p>Find photos and updates on our Instagram page. Follow Kalavedhike as we bring music, dance, and our neighbourhood community closer together.</p><Link to="/gallery" className="button button-outline">Explore the gallery <span aria-hidden="true">&#8599;</span></Link></div></div>
+        <div className="container gallery-teaser-grid"><div className="teaser-art"><Artwork src={artImage('Bharatanatyam')} alt="Bharatanatyam-inspired pleats, bells, and decorative forms; original illustration" /></div><div><p className="eyebrow">More than a performance venue</p><h2>A community,<br />connected by <em>art.</em></h2><p>Find photos and updates on our Instagram page. Follow Kalavedike as we bring music, dance, and our neighbourhood community closer together.</p><Link to="/gallery" className="button button-outline">Explore the gallery <span aria-hidden="true">&#8599;</span></Link></div></div>
       </section>
       <TestimonialsCarousel testimonials={testimonials} />
     </>

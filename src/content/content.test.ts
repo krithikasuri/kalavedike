@@ -6,10 +6,17 @@ import { archiveEvents } from './sampleArchive'
 import { albums } from './gallery'
 import { artForms, artImage, assetUrl, site } from './site'
 import { trustees } from './trustees'
-import { existsSync } from 'node:fs'
+import { existsSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
 
 describe('site content', () => {
+  it('uses the correct brand in initial page metadata', () => {
+    const html = readFileSync(join(process.cwd(), 'index.html'), 'utf8')
+    const document = new DOMParser().parseFromString(html, 'text/html')
+    expect(document.title).toBe('Kalavedike | Bringing the Arts Closer to Home')
+    expect(document.querySelector('meta[name="description"]')?.getAttribute('content')).toBe('Kalavedike brings Indian classical music and dance closer to home for Sarjapur Road and surrounding neighbourhoods in Bengaluru.')
+  })
+
   it('loads the editable calendar and requires every configured photo and sponsor logo to exist', () => {
     expect(new Set(events.map((event) => event.id)).size).toBe(events.length)
     for (const event of events) {
@@ -39,7 +46,7 @@ describe('site content', () => {
     for (const trustee of trustees) {
       expect(trustee.role).toBe('Trustee')
       expect(trustee.sample).toBe(false)
-      expect(trustee.bio).toContain(`${trustee.name} is a trustee of Kalavedhike.`)
+      expect(trustee.bio).toContain(`${trustee.name} is a trustee of Kalavedike.`)
       expect(trustee.bio.length).toBeGreaterThan(150)
     }
   })
