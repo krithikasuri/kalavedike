@@ -32,9 +32,9 @@ export const trustees: Trustee[] = [
     id: 'shanthi-naresh',
     name: 'Shanthi Naresh',
     role: 'Trustee',
-    photo: '',
-    photoAlt: '',
-    bio: 'Shanthi Naresh is a trustee of Kalavedike. At the heart of the trust is a community where families can experience classical music and dance together, and where children can discover the beauty of our artistic traditions in their own neighbourhood.',
+    photo: 'assets/trustees/shanti.jpg',
+    photoAlt: 'Portrait of Shanthi Naresh',
+    bio: 'A dedicated practitioner of Indian classical music, I began my formal training in Carnatic vocal music at the age of 13. Over the years, my connection to the tradition has evolved from dedicated student and performer to educator. Today, I combine my love for vocal instruction with a strong commitment to community building—creating platforms that celebrate classical art forms and spotlight emerging talent in music and dance.',
     sample: false,
   },
   {
