@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router-dom'
 import { EventSchedule } from '../components/EventSchedule'
 import { EventDetails } from '../components/EventDetails'
 import { events } from '../content/events'
+import { site } from '../content/site'
 import type { Program } from '../content/types'
 import { useNow } from '../lib/useNow'
 
@@ -34,7 +35,7 @@ export function EventsPage() {
   return (
     <>
       <section className="events-hero container">
-        <div><p className="eyebrow">Bringing the arts closer to home</p><h1>Make time for <em>the arts.</em></h1></div>
+        <div><p className="eyebrow">{site.tagline}</p><h1>Make time for <em>the arts.</em></h1></div>
         <p>Browse the whole season at a glance. Find the music and dance you love, closer to our neighbourhood.</p>
       </section>
       <section className="container events-section">

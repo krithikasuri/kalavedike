@@ -2,7 +2,7 @@
 
 A standalone, English-language website for an Indian performing-arts trust bringing classical arts closer to Sarjapur Road and surrounding neighbourhoods in Bengaluru. Built with React, TypeScript, and Vite, with local content and no backend.
 
-The public brand is **Kalavedike**, with the tagline **Bringing the Arts Closer to Home**. The project directory, package identifier, example static-host subpath, and Instagram handle use the same spelling.
+The public brand is **Kalavedike**, with the tagline **Bringing the arts closer to home.** The project directory, package identifier, example static-host subpath, and Instagram handle use the same spelling.
 
 ## Run locally
 
@@ -123,7 +123,7 @@ Before importing, set `KALAVEDIKE_EVENTS_CSV_URL=<approved HTTPS CSV export URL>
 
 ## Approved narrative and remaining content
 
-The supplied vision and About narrative are approved site content, not sample text. They describe the neighbourhood-accessibility purpose, Bengaluru's cultural hubs, the Sarjapur Road travel barrier, the founding members' collective initiative, the full range of classical art forms, and the community/family focus. All supplied sections are rendered, including Our Story, Our Vision, What We Do, More Than a Performance Venue, and Join Us on This Journey.
+The supplied vision and About narrative are approved site content, not sample text. They describe the neighbourhood-accessibility purpose, Bengaluru's cultural hubs, the Sarjapur Road travel barrier, the founding members' collective initiative, the full range of classical art forms, and the community/family focus. The About sections include Our Story, Our Vision, What We Do, and Join Us on This Journey. The cultural-heritage paragraph from the former More Than a Performance Venue section is now part of the shared Home and About vision.
 
 `src\content\site.ts` centralises the name, tagline, signature, and full vision; the shared `VisionStatement` component keeps Home and About consistent. `src\content\about.ts` holds the full supplied About paragraphs and offerings. Header, footer, page introductions, notices, and metadata use the same neighbourhood/community message.
 

@@ -2,15 +2,16 @@ import type { ArtForm } from './types'
 
 export const site = {
   name: 'Kalavedike',
-  tagline: 'Bringing the Arts Closer to Home',
-  shortTagline: 'Arts closer to home',
-  signature: 'Celebrating Tradition. Building Community. Bringing Art Closer to Home.',
+  tagline: 'Bringing the arts closer to home.',
+  shortTagline: 'Bringing the arts closer to home.',
+  signature: 'Celebrating Tradition. Building Community. Bringing the arts closer to home.',
   logo: 'assets/branding/instagram-logo.jpg',
   instagram: 'https://www.instagram.com/bellezeakalavedike/',
   instagramHandle: '@bellezeakalavedike',
   email: '',
   vision: 'To create a vibrant cultural space where the richness of Indian classical performing arts is accessible to everyone, right in their neighbourhood.',
   visionCommunity: 'We envision a community where distance is no longer a barrier to experiencing the beauty of music and dance, where artists find an appreciative audience, and where the next generation grows up surrounded by the richness of our artistic heritage.',
+  visionHeritage: 'We believe that when the arts become part of everyday community life, they do more than entertain. They inspire curiosity, deepen cultural connections, and help preserve a rich heritage for future generations.',
   aspiration: 'To bring art closer to people, and people closer to art.',
   contentNotice: 'Program details may change. Dates marked as proposed are not confirmed bookings. Visit our Instagram page for photos and updates.',
 }

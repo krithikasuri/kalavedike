@@ -48,14 +48,6 @@ export function AboutPage() {
         <p>{about.offeringsConclusion}</p>
       </section>
 
-      <section className="community-story section-pad" aria-labelledby="community-title">
-        <div className="container about-narrative">
-          <p className="eyebrow">Building a community that values the arts</p>
-          <h2 id="community-title">More Than a <br />Performance <em>Venue</em></h2>
-          {about.community.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
-        </div>
-      </section>
-
       <section className="container section-pad" aria-labelledby="trustees-heading">
         <div className="section-heading">
           <div><p className="eyebrow">The people behind the purpose</p><h2 id="trustees-heading">Meet our <em>trustees.</em></h2></div>

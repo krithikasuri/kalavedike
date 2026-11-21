@@ -6,7 +6,7 @@ export function ContactPage() {
   return (
     <>
       <section className="page-intro container">
-        <p className="eyebrow">Bringing the arts closer to home</p>
+        <p className="eyebrow">{site.tagline}</p>
         <h1>Contact <em>us</em></h1>
         <p>We would love to hear from you about our programs, the arts, or being part of our neighbourhood community.</p>
       </section>

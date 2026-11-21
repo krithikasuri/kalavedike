@@ -13,7 +13,7 @@ describe('site content', () => {
   it('uses the correct brand in initial page metadata', () => {
     const html = readFileSync(join(process.cwd(), 'index.html'), 'utf8')
     const document = new DOMParser().parseFromString(html, 'text/html')
-    expect(document.title).toBe('Kalavedike | Bringing the Arts Closer to Home')
+    expect(document.title).toBe('Kalavedike | Bringing the arts closer to home.')
     expect(document.querySelector('meta[name="description"]')?.getAttribute('content')).toBe('Kalavedike brings Indian classical music and dance closer to home for Sarjapur Road and surrounding neighbourhoods in Bengaluru.')
   })
 

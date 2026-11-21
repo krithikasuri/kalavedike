@@ -80,6 +80,7 @@ describe('Kalavedike pages', () => {
     const main = within(screen.getByRole('main'))
     expect(main.getByText(site.vision)).toBeInTheDocument()
     expect(main.getByText(site.visionCommunity)).toBeInTheDocument()
+    expect(main.getAllByText('We believe that when the arts become part of everyday community life, they do more than entertain. They inspire curiosity, deepen cultural connections, and help preserve a rich heritage for future generations.')).toHaveLength(1)
     expect(main.getByText((_, element) => element?.tagName === 'P' && element.textContent === `Our aspiration is simple: ${site.aspiration}`)).toBeInTheDocument()
     expect(main.queryByText('Illustrative vision statement')).not.toBeInTheDocument()
     expect(document.body).not.toHaveTextContent(/Kalaved[h]ike/i)
@@ -97,18 +98,24 @@ describe('Kalavedike pages', () => {
     expect(screen.getByRole('heading', { name: 'Update sponsors' })).toBeInTheDocument()
   })
 
-  it('renders every supplied About paragraph, offering, section, and signature without fictional trustees', () => {
+  it('renders the revised About narrative and vision without the redundant community section', () => {
     window.history.replaceState(null, '', '/#/about')
     render(<App />)
     const main = within(screen.getByRole('main'))
-    for (const paragraph of [...about.introduction, ...about.story, ...about.community, ...about.join, about.offeringsIntroduction, about.offeringsConclusion, site.vision, site.visionCommunity]) {
+    for (const paragraph of [...about.introduction, ...about.story, ...about.join, about.offeringsIntroduction, about.offeringsConclusion, site.vision, site.visionCommunity]) {
       expect(main.getByText(paragraph)).toBeInTheDocument()
     }
     for (const offering of about.offerings) expect(main.getByText(offering)).toBeInTheDocument()
-    for (const heading of ['Our Story', 'Our Vision', 'What We Do', 'More Than a Performance Venue', 'Join Us on This Journey']) {
+    for (const heading of ['Our Story', 'Our Vision', 'What We Do', 'Join Us on This Journey']) {
       expect(main.getByRole('heading', { name: heading })).toBeInTheDocument()
     }
     expect(main.getByText(about.subtitle)).toBeInTheDocument()
+    expect(main.queryByRole('heading', { name: 'More Than a Performance Venue' })).not.toBeInTheDocument()
+    expect(main.queryByText('Kalavedike is about more than organizing concerts and performances.')).not.toBeInTheDocument()
+    const vision = within(main.getByRole('region', { name: 'Our Vision' }))
+    expect(vision.getAllByText('We believe that when the arts become part of everyday community life, they do more than entertain. They inspire curiosity, deepen cultural connections, and help preserve a rich heritage for future generations.')).toHaveLength(1)
+    expect(main.getByText("We believe that appreciating the arts shouldn't always require travelling across the city battling heavy traffic.")).toBeInTheDocument()
+    expect(main.getByText(/we aim to bring accomplished and upcoming artists and appreciative audiences together/)).toBeInTheDocument()
     expect(main.getByText(`${site.name} | ${site.signature}`)).toBeInTheDocument()
     expect(main.getByText(/travelling over 90 minutes each way/)).toBeInTheDocument()
     expect(main.getByText(/Malleswaram, Basavanagudi, and Banashankari/)).toBeInTheDocument()
@@ -126,6 +133,19 @@ describe('Kalavedike pages', () => {
     expect(trusteeSection.getByText(/Individual biographies and photographs will be added when available/)).toBeInTheDocument()
     expect(main.queryByText(/Trustee profile 0|Illustrative trust copy|Sample vision and values|Stewardship & vision/)).not.toBeInTheDocument()
     expect(screen.getByRole('complementary', { name: 'Program and gallery notice' })).not.toHaveTextContent(/Trust copy|trustee profiles|vision/i)
+  })
+
+  it.each(['/', '/about', '/events', '/sponsors', '/contact'])('uses the exact brand tagline on %s', (route) => {
+    window.history.replaceState(null, '', `/#${route}`)
+    render(<App />)
+    expect(within(screen.getByRole('banner')).getByText('Bringing the arts closer to home.', { exact: true })).toBeInTheDocument()
+    const main = within(screen.getByRole('main'))
+    if (route === '/') {
+      expect(main.getByRole('heading', { level: 1, name: 'Bringing the arts closer to home.' })).toBeInTheDocument()
+    } else {
+      expect(main.getByText('Bringing the arts closer to home.', { exact: true, selector: 'p.eyebrow' })).toBeInTheDocument()
+    }
+    expect(screen.getByRole('contentinfo')).toHaveTextContent('Celebrating Tradition. Building Community. Bringing the arts closer to home.')
   })
 
   it('opens the first fixture event and displays its proposed date with time and venue TBA', async () => {

@@ -53,6 +53,7 @@ async function expectDetails(page: Page, event: Program) {
 const approvedVision = [
   'To create a vibrant cultural space where the richness of Indian classical performing arts is accessible to everyone, right in their neighbourhood.',
   'We envision a community where distance is no longer a barrier to experiencing the beauty of music and dance, where artists find an appreciative audience, and where the next generation grows up surrounded by the richness of our artistic heritage.',
+  'We believe that when the arts become part of everyday community life, they do more than entertain. They inspire curiosity, deepen cultural connections, and help preserve a rich heritage for future generations.',
   'Our aspiration is simple: To bring art closer to people, and people closer to art.',
 ]
 
@@ -111,6 +112,10 @@ test('all pages are reachable through hash navigation and the responsive menu', 
     await expect(page).toHaveURL(new RegExp(`#${route.path}$`))
     await expect(page).toHaveTitle(`${route.title} | Kalavedike`)
     await expect(page.getByRole('banner').getByRole('link', { name: 'Kalavedike home', exact: true })).toBeVisible()
+    await expect(page.getByRole('banner').getByText('Bringing the arts closer to home.', { exact: true })).toBeVisible()
+    if (['/about', '/events', '/sponsors', '/contact'].includes(route.path)) {
+      await expect(page.getByRole('main').locator('p.eyebrow').filter({ hasText: /^Bringing the arts closer to home\.$/ })).toBeVisible()
+    }
     await expect(page.locator('body')).not.toContainText(/Kalaved[h]ike/i)
     await expect(page.getByRole('contentinfo').getByRole('link', { name: /@bellezeakalavedike/ })).toHaveAttribute('href', 'https://www.instagram.com/bellezeakalavedike/')
     const notice = page.getByRole('complementary', { name: 'Program and gallery notice' })
@@ -130,7 +135,7 @@ test('home presents the official community tagline and complete approved vision'
   await expect(page.getByText('Experience the richness of Indian classical music and dance, right here in our neighbourhood.', { exact: true })).toBeVisible()
   const vision = page.getByRole('region', { name: /Art closer to people\.\s*People closer to art\./ })
   await expect(vision.locator('.vision-statement p')).toHaveText(approvedVision)
-  await expect(page.getByRole('contentinfo')).toContainText('Celebrating Tradition. Building Community. Bringing Art Closer to Home.')
+  await expect(page.getByRole('contentinfo')).toContainText('Celebrating Tradition. Building Community. Bringing the arts closer to home.')
   await expect(page).toHaveTitle('Home | Kalavedike')
   await page.getByRole('link', { name: /Discover Kalavedike/ }).click()
   await expect(page).toHaveURL(/#\/about$/)
@@ -274,11 +279,11 @@ test('home testimonial carousel supports controls, selectors and keyboard naviga
   await testInfo.attach('Home testimonial carousel', { path, contentType: 'image/png' })
 })
 
-test('about renders the full approved story, vision, offerings, community and supplied trustees', async ({ page }, testInfo) => {
+test('about renders the revised story, vision, offerings and supplied trustees', async ({ page }, testInfo) => {
   await page.goto('/#/about')
   const main = page.getByRole('main')
   await expect(main.getByRole('heading', { level: 1, name: 'About Kalavedike', exact: true })).toBeVisible()
-  await expect(main.getByText('Bringing the Arts Closer to Home', { exact: true })).toBeVisible()
+  await expect(main.locator('p.eyebrow').filter({ hasText: /^Bringing the arts closer to home\.$/ })).toBeVisible()
   await expect(main.getByText(about.subtitle, { exact: true })).toBeVisible()
   const introduction = main.getByRole('region', { name: 'Why Kalavedike began' })
   for (const paragraph of about.introduction) {
@@ -290,7 +295,6 @@ test('about renders the full approved story, vision, offerings, community and su
   await expect(introduction).toContainText('over 90 minutes each way')
   for (const [heading, paragraphs] of [
     [/^Our Story$/, about.story],
-    [/^More Than a\s*Performance Venue$/, about.community],
     [/^Join Us on\s*This Journey$/, about.join],
   ] as const) {
     const section = main.getByRole('region', { name: heading })
@@ -300,6 +304,7 @@ test('about renders the full approved story, vision, offerings, community and su
     }
   }
   const vision = main.getByRole('region', { name: 'Our Vision', exact: true })
+  await expect(main.getByRole('heading', { name: /^More Than a\s*Performance Venue$/ })).toHaveCount(0)
   await expect(vision.getByRole('heading', { name: 'Our Vision', exact: true })).toBeVisible()
   await expect(vision.locator('.vision-statement p')).toHaveText(approvedVision)
   const offerings = main.getByRole('region', { name: 'What We Do', exact: true })

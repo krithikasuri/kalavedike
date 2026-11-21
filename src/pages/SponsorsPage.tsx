@@ -1,12 +1,13 @@
 import { Link } from 'react-router-dom'
 import { SponsorCard } from '../components/SponsorCard'
 import { sponsors } from '../content/sponsors'
+import { site } from '../content/site'
 
 export function SponsorsPage() {
   return (
     <>
       <section className="page-intro container">
-        <p className="eyebrow">Bringing the arts closer to home, together</p>
+        <p className="eyebrow">{site.tagline}</p>
         <h1>Our <em>sponsors</em></h1>
         <p>A space to recognise those who help bring Indian classical arts closer to our neighbourhood.</p>
       </section>
