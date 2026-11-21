@@ -321,7 +321,11 @@ test('about renders the revised story, vision, offerings and supplied trustees',
     const card = trusteeSection.getByRole('article').filter({ has: page.getByRole('heading', { name, exact: true }) })
     await expect(card.getByRole('heading', { name, exact: true })).toBeVisible()
     if (photo) {
-      await expect(card.getByRole('img', { name: photoAlt, exact: true })).toBeVisible()
+      const portrait = card.getByRole('img', { name: photoAlt, exact: true })
+      await portrait.scrollIntoViewIfNeeded()
+      await expect(portrait).toBeVisible()
+      await expect.poll(() => portrait.evaluate((image) => image instanceof HTMLImageElement && image.complete && image.naturalWidth > 0)).toBe(true)
+      await expect(portrait).toHaveCSS('object-fit', 'contain')
       await expect(card.locator('img')).toHaveAttribute('src', new RegExp(`${photo.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`))
       await expect(card.getByText('Photo to follow', { exact: true })).toHaveCount(0)
     } else {

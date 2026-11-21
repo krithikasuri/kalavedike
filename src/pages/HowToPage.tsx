@@ -102,7 +102,7 @@ export function HowToPage() {
             <li>Set <code>photoAlt</code> to a short, accurate description of the image. Keep the quotation marks and trailing commas. Leave <code>photo: &apos;&apos;</code> to retain the initials placeholder until a photo is ready.</li>
             <li>Follow <strong>Save and publish</strong>, then check the trustee card on the About page.</li>
           </ol>
-          <p>The trustees file is not JSON; retain its existing syntax. Images fill the existing photo slot and may be cropped to fit. Missing files or empty image descriptions prevent publishing; an image that fails to load in the browser is labelled Photo unavailable.</p>
+          <p>The trustees file is not JSON; retain its existing syntax. Images fit inside the existing photo slot without cropping. Missing files or empty image descriptions prevent publishing; an image that fails to load in the browser is labelled Photo unavailable.</p>
         </section>
 
         <section className="guide-card" aria-labelledby="guide-images">

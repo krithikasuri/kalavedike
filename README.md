@@ -139,7 +139,7 @@ The user confirmed permission to reuse selected material from [@bellezeakalavedi
 
 The supplied trustees are Pallavi K Srinivasa, Roopa Sreedharan Madampath, Krithika Surianarayanan, Shanthi Naresh, and Tarini Basavaraju. `trustees.ts` maintains their names, Trustee role, approved biographies and photo fields. Photos use labelled initials placeholders until supplied. Upload approved JPG, PNG or WebP images to `public\assets\trustees`, then set the matching trustee's `photo` to a website asset path such as `assets/trustees/roopa.jpg` and `photoAlt` to an accurate image description. Leave `photo: ''` to keep the initials placeholder. Builds reject missing configured files and empty image descriptions; browser loading failures show Photo unavailable. Use permitted files; do not scrape Instagram, hotlink expiring CDN URLs, or use account credentials.
 
-Keep **all imagery free of artist faces**, including trustee cards and gallery media. Check supplied files and use approved face-free crops or alternatives. Original local SVG illustrations currently represent the five art forms; they are not photographs or records of real performances. Do not describe them as such.
+Keep **event and gallery imagery free of artist faces**. Check supplied files and use approved face-free crops or alternatives. Trustee portraits supplied and approved for publication are displayed without cropping; Roopa and Krithika now have supplied photos, while other trustees retain initials placeholders. Original local SVG illustrations currently represent the five art forms; they are not photographs or records of real performances. Do not describe them as such.
 
 ### Content files
 
