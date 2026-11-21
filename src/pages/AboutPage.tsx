@@ -54,7 +54,7 @@ export function AboutPage() {
           <p className="heading-note">United by a passion for the arts <br />and a commitment to our neighbourhood.</p>
         </div>
         <p className="trustee-introduction">The founding members form the trust that guides {site.name}, bringing together their love for Indian classical performing arts and their commitment to the community.</p>
-        <p className="trustee-profile-note">These introductions reflect the trust's shared purpose. Individual biographies and photographs will be added when available.</p>
+        <p className="trustee-profile-note">Additional trustee biographies and photographs will be added when available.</p>
         {trustees.length > 0 ? (
           <div className="trustee-grid">{trustees.map((trustee) => (
             <article className="trustee-card" key={trustee.id}>

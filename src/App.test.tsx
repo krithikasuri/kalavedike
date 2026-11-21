@@ -15,6 +15,10 @@ vi.mock('./content/sponsors', async () => ({
 
 const firstEventId = 'calendar-2027-01-23-carnatic-vocal-1'
 const originalEmail = site.email
+const personalBiographies: Record<string, string> = {
+  'roopa-sreedharan-madampath': "Dance has been a constant in my life, ever since I first started learning bharatanatyam at the age of 4. When adulthood and maturity crept into my life, I started considering bharatanatyam not just as an art form to practice and perform but as a way of seeing and engaging with the world. Now retired from professional life and from performances, I find myself drawn to a different kind of engagement with the arts — as one of the founders of Kalavedike. Kalavedike stands for what I truly believe in - that art should  be accessible to everyone and artists should have the freedom to explore, create and express themselves without constraints. Kalavedike is a wonderful opportunity to help create a space where art, artists, and art lovers can thrive.",
+  'krithika-surianarayanan': "I spend my professional life in the world of technology, but I believe that some of life's most meaningful connections happen through art, culture, and community. As a student of Bharatanatyam and Carnatic music myself, I have a deep appreciation for the richness of Indian classical arts and the joy they bring to both performers and audiences. I am passionate about making these traditions more accessible to people in their own neighbourhoods. Kalavedike reflects my belief that great art need not be experienced only in established cultural centres, and that thriving communities are built when people come together to celebrate creativity, talent, and tradition.",
+}
 
 beforeEach(() => {
   vi.useFakeTimers({ toFake: ['Date'] })
@@ -125,12 +129,17 @@ describe('Kalavedike pages', () => {
     for (const [index, trustee] of trustees.entries()) {
       const card = within(cards[index])
       expect(card.getByRole('heading', { name: trustee.name, level: 3 })).toBeInTheDocument()
-      expect(card.getByText(trustee.bio)).toBeInTheDocument()
+      expect(card.getByText((_, element) => element?.tagName === 'P' && element.textContent === trustee.bio)).toBeInTheDocument()
+      const personalBiography = personalBiographies[trustee.id]
+      if (personalBiography) {
+        expect(card.getByText((_, element) => element?.tagName === 'P' && element.textContent === personalBiography)).toBeInTheDocument()
+        expect(card.queryByText(new RegExp(`${trustee.name} is a trustee of Kalavedike\\.`))).not.toBeInTheDocument()
+      }
       expect(card.getByText('Trustee', { exact: true })).toBeInTheDocument()
       expect(card.getByRole('img', { name: `Photo placeholder for ${trustee.name}` })).toBeInTheDocument()
       expect(card.getByText('Photo to follow')).toBeInTheDocument()
     }
-    expect(trusteeSection.getByText(/Individual biographies and photographs will be added when available/)).toBeInTheDocument()
+    expect(trusteeSection.getByText('Additional trustee biographies and photographs will be added when available.')).toBeInTheDocument()
     expect(main.queryByText(/Trustee profile 0|Illustrative trust copy|Sample vision and values|Stewardship & vision/)).not.toBeInTheDocument()
     expect(screen.getByRole('complementary', { name: 'Program and gallery notice' })).not.toHaveTextContent(/Trust copy|trustee profiles|vision/i)
   })

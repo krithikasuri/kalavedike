@@ -12,14 +12,14 @@ export const trustees: Trustee[] = [
     id: 'roopa-sreedharan-madampath',
     name: 'Roopa Sreedharan Madampath',
     role: 'Trustee',
-    bio: 'Roopa Sreedharan Madampath is a trustee of Kalavedike. Through thoughtfully curated performances, the trust brings accomplished artists and appreciative audiences together to experience and celebrate our classical traditions closer to home.',
+    bio: "Dance has been a constant in my life, ever since I first started learning bharatanatyam at the age of 4. When adulthood and maturity crept into my life, I started considering bharatanatyam not just as an art form to practice and perform but as a way of seeing and engaging with the world. Now retired from professional life and from performances, I find myself drawn to a different kind of engagement with the arts — as one of the founders of Kalavedike. Kalavedike stands for what I truly believe in - that art should  be accessible to everyone and artists should have the freedom to explore, create and express themselves without constraints. Kalavedike is a wonderful opportunity to help create a space where art, artists, and art lovers can thrive.",
     sample: false,
   },
   {
     id: 'krithika-surianarayanan',
     name: 'Krithika Surianarayanan',
     role: 'Trustee',
-    bio: 'Krithika Surianarayanan is a trustee of Kalavedike. The trust envisions a vibrant cultural space where distance is no longer a barrier to experiencing Indian classical performing arts, and where the next generation can grow up connected to this heritage.',
+    bio: "I spend my professional life in the world of technology, but I believe that some of life's most meaningful connections happen through art, culture, and community. As a student of Bharatanatyam and Carnatic music myself, I have a deep appreciation for the richness of Indian classical arts and the joy they bring to both performers and audiences. I am passionate about making these traditions more accessible to people in their own neighbourhoods. Kalavedike reflects my belief that great art need not be experienced only in established cultural centres, and that thriving communities are built when people come together to celebrate creativity, talent, and tradition.",
     sample: false,
   },
   {

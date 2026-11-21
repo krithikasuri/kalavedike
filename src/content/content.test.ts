@@ -46,7 +46,9 @@ describe('site content', () => {
     for (const trustee of trustees) {
       expect(trustee.role).toBe('Trustee')
       expect(trustee.sample).toBe(false)
-      expect(trustee.bio).toContain(`${trustee.name} is a trustee of Kalavedike.`)
+      if (!['roopa-sreedharan-madampath', 'krithika-surianarayanan'].includes(trustee.id)) {
+        expect(trustee.bio).toContain(`${trustee.name} is a trustee of Kalavedike.`)
+      }
       expect(trustee.bio.length).toBeGreaterThan(150)
     }
   })

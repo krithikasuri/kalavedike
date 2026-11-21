@@ -1,6 +1,7 @@
 import { expect, test, type Page } from '@playwright/test'
 import { join, resolve } from 'node:path'
 import { about } from '../src/content/about'
+import { trustees } from '../src/content/trustees'
 import eventRecords from '../src/content/events.json' with { type: 'json' }
 import sponsorRecords from '../src/content/sponsors.json' with { type: 'json' }
 import { parseEvents, parseSponsors } from '../src/content/parseContent'
@@ -314,17 +315,19 @@ test('about renders the revised story, vision, offerings and supplied trustees',
   await expect(offerings.getByText(about.offeringsConclusion, { exact: true })).toBeVisible()
   const trusteeSection = main.getByRole('region', { name: 'Meet our trustees.', exact: true })
   await expect(trusteeSection).toContainText('The founding members form the trust that guides Kalavedike')
-  await expect(trusteeSection).toContainText('Individual biographies and photographs will be added when available.')
+  await expect(trusteeSection).toContainText('Additional trustee biographies and photographs will be added when available.')
   await expect(trusteeSection.locator('.trustee-card')).toHaveCount(5)
-  for (const name of ['Pallavi K Srinivasa', 'Roopa Sreedharan Madampath', 'Krithika Surianarayanan', 'Shanthi Naresh', 'Tarini Basavaraju']) {
+  for (const { name, bio } of trustees) {
     const card = trusteeSection.getByRole('article').filter({ has: page.getByRole('heading', { name, exact: true }) })
     await expect(card.getByRole('heading', { name, exact: true })).toBeVisible()
     await expect(card.getByRole('img', { name: `Photo placeholder for ${name}`, exact: true })).toBeVisible()
     await expect(card.getByText('Photo to follow', { exact: true })).toBeVisible()
-    await expect(card).toContainText(`${name} is a trustee of Kalavedike.`)
+    await expect(card.locator('p').last()).toHaveText(bio)
+    expect(await card.locator('p').last().evaluate((paragraph) => paragraph.textContent)).toBe(bio)
     await expect(card.locator('img')).toHaveCount(0)
     await expect(card).not.toContainText('Sample profile')
   }
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true)
   const trusteeScreenshot = join(artifacts, `kalavedike-trustees-${testInfo.project.name}.png`)
   await trusteeSection.screenshot({ path: trusteeScreenshot, animations: 'disabled' })
   await testInfo.attach('Trustee introductions and photo placeholders', { path: trusteeScreenshot, contentType: 'image/png' })
