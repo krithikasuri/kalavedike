@@ -50,6 +50,11 @@ describe('site content', () => {
         expect(trustee.bio).toContain(`${trustee.name} is a trustee of Kalavedike.`)
       }
       expect(trustee.bio.length).toBeGreaterThan(150)
+      if (trustee.photo) {
+        expect(trustee.photo).toMatch(/^assets\/trustees\/[^/\\]+\.(jpg|jpeg|png|webp)$/i)
+        expect(trustee.photoAlt.trim().length).toBeGreaterThan(0)
+        expect(existsSync(join(process.cwd(), 'public', trustee.photo)), `Missing trustee photo: public/${trustee.photo}`).toBe(true)
+      }
     }
   })
 

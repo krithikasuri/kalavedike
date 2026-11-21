@@ -34,7 +34,7 @@ export function HowToPage() {
       <section className="page-intro container">
         <p className="eyebrow">A helping hand for our volunteers</p>
         <h1>Website <em>guide</em></h1>
-        <p>Add events and update sponsors using your web browser. No coding software or installation needed.</p>
+        <p>Add events, update sponsors and add trustee photos using your web browser. No coding software or installation needed.</p>
       </section>
       <div className="container how-to-guide">
         <section className="guide-note" aria-labelledby="guide-start">
@@ -92,6 +92,18 @@ export function HowToPage() {
             <p>Not ready to name a sponsor? Keep <code>"placeholder": true</code> and leave <code>website</code> and <code>logo</code> as <code>""</code> for a blank, clearly labelled placeholder.</p>
           </section>
         </div>
+
+        <section className="guide-card" aria-labelledby="guide-trustees">
+          <h2 id="guide-trustees">Add trustee photos</h2>
+          <ol>
+            <li>Upload an approved JPG, PNG or WebP image to the <GitHubLink path="tree/main/public/assets/trustees">trustee photos folder</GitHubLink>. Use a short filename with no spaces, such as <code>roopa.jpg</code>.</li>
+            <li><GitHubLink path="blob/main/src/content/trustees.ts">Open the trustees file on GitHub</GitHubLink> and click the pencil icon. Find the trustee by name; leave their name, biography and other fields unchanged.</li>
+            <li>Replace <code>photo: &apos;&apos;</code> with <code>photo: &apos;assets/trustees/roopa.jpg&apos;</code>. Match your uploaded filename exactly. Use forward slashes in this website asset path and do not include <code>public/</code>.</li>
+            <li>Set <code>photoAlt</code> to a short, accurate description of the image. Keep the quotation marks and trailing commas. Leave <code>photo: &apos;&apos;</code> to retain the initials placeholder until a photo is ready.</li>
+            <li>Follow <strong>Save and publish</strong>, then check the trustee card on the About page.</li>
+          </ol>
+          <p>The trustees file is not JSON; retain its existing syntax. Images fill the existing photo slot and may be cropped to fit. Missing files or empty image descriptions prevent publishing; an image that fails to load in the browser is labelled Photo unavailable.</p>
+        </section>
 
         <section className="guide-card" aria-labelledby="guide-images">
           <h2 id="guide-images">Upload a photo or logo</h2>

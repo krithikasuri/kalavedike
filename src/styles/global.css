@@ -144,7 +144,8 @@ p { line-height: 1.8; }
 .about-join .community-signature { color: var(--wine); font-size: .76rem; margin-top: 32px; line-height: 1.9; }
 .trustee-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 30px; margin-top: 35px; }
 .trustee-card { border: 1px solid var(--line); padding: 28px; }
-.trustee-photo-placeholder { height: 190px; background: repeating-linear-gradient(45deg, transparent 0 12px, #bba06c33 12px 13px, transparent 13px 25px), repeating-linear-gradient(-45deg, transparent 0 12px, #bba06c33 12px 13px, transparent 13px 25px), var(--linen); display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 18px; margin: -28px -28px 26px; }
+.trustee-photo, .trustee-photo-placeholder { height: 190px; background: repeating-linear-gradient(45deg, transparent 0 12px, #bba06c33 12px 13px, transparent 13px 25px), repeating-linear-gradient(-45deg, transparent 0 12px, #bba06c33 12px 13px, transparent 13px 25px), var(--linen); display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 18px; margin: -28px -28px 26px; }
+.trustee-photo > img, .trustee-photo > .artwork-unavailable { width: 100%; height: 100%; object-fit: cover; }
 .trustee-initials { width: 80px; height: 80px; border-radius: 50%; border: 1px solid #baa077; outline: 1px solid #baa077; outline-offset: 5px; background: var(--paper); font-family: var(--serif); font-size: 2rem; color: var(--wine); display: grid; place-items: center; }
 .trustee-photo-label { font-size: .6rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
 .trustee-card h3 { font-size: 1.65rem; line-height: 1.25; overflow-wrap: anywhere; }
@@ -385,7 +386,7 @@ a.sponsor-card-content:hover { background: var(--linen); }
   .about-story p:not(.eyebrow) { font-size: .8rem; }
   .trustee-grid { grid-template-columns: 1fr; }
   .trustee-card { padding: 25px; }
-  .trustee-photo-placeholder { margin: -25px -25px 25px; height: 170px; }
+  .trustee-photo, .trustee-photo-placeholder { margin: -25px -25px 25px; height: 170px; }
   .events-hero { grid-template-columns: 1fr; gap: 14px; }
   .events-hero > p { justify-self: start; max-width: 500px; }
   .season-programs { grid-template-columns: repeat(2, minmax(0, 1fr)); }

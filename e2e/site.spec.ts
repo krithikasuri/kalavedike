@@ -317,14 +317,20 @@ test('about renders the revised story, vision, offerings and supplied trustees',
   await expect(trusteeSection).toContainText('The founding members form the trust that guides Kalavedike')
   await expect(trusteeSection).toContainText('Additional trustee biographies and photographs will be added when available.')
   await expect(trusteeSection.locator('.trustee-card')).toHaveCount(5)
-  for (const { name, bio } of trustees) {
+  for (const { name, bio, photo, photoAlt } of trustees) {
     const card = trusteeSection.getByRole('article').filter({ has: page.getByRole('heading', { name, exact: true }) })
     await expect(card.getByRole('heading', { name, exact: true })).toBeVisible()
-    await expect(card.getByRole('img', { name: `Photo placeholder for ${name}`, exact: true })).toBeVisible()
-    await expect(card.getByText('Photo to follow', { exact: true })).toBeVisible()
+    if (photo) {
+      await expect(card.getByRole('img', { name: photoAlt, exact: true })).toBeVisible()
+      await expect(card.locator('img')).toHaveAttribute('src', new RegExp(`${photo.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`))
+      await expect(card.getByText('Photo to follow', { exact: true })).toHaveCount(0)
+    } else {
+      await expect(card.getByRole('img', { name: `Photo placeholder for ${name}`, exact: true })).toBeVisible()
+      await expect(card.getByText('Photo to follow', { exact: true })).toBeVisible()
+      await expect(card.locator('img')).toHaveCount(0)
+    }
     await expect(card.locator('p').last()).toHaveText(bio)
     expect(await card.locator('p').last().evaluate((paragraph) => paragraph.textContent)).toBe(bio)
-    await expect(card.locator('img')).toHaveCount(0)
     await expect(card).not.toContainText('Sample profile')
   }
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true)

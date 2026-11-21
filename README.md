@@ -137,7 +137,7 @@ Update `src\content\testimonials.ts` with approved quotes, attribution names and
 
 The user confirmed permission to reuse selected material from [@bellezeakalavedike](https://www.instagram.com/bellezeakalavedike/). The logo was downloaded from the profile's public Open Graph image metadata on 17 November 2026 and stored locally as `public\assets\branding\instagram-logo.jpg`. It is a small 150-by-150-pixel JPEG with a stylized orange instrument/letterform on black and no artist faces. The header, footer, and favicon use this logo; the floral medallion elsewhere is original decoration, not a substitute logo. A high-resolution original can replace the small profile image later.
 
-The supplied trustees are Pallavi K Srinivasa, Roopa Sreedharan Madampath, Krithika Surianarayanan, Shanthi Naresh, and Tarini Basavaraju. `trustees.ts` maintains their names and Trustee role. Current introductions state that role and describe the trust's approved shared mission, not personal backgrounds or specialist responsibilities. Photos use labelled initials placeholders; replace the introductions with approved individual biographies when supplied. Actual trustee photos and event imagery have not been supplied. Use permitted files or directly accessible asset links; do not scrape Instagram, hotlink expiring CDN URLs, or use account credentials.
+The supplied trustees are Pallavi K Srinivasa, Roopa Sreedharan Madampath, Krithika Surianarayanan, Shanthi Naresh, and Tarini Basavaraju. `trustees.ts` maintains their names, Trustee role, approved biographies and photo fields. Photos use labelled initials placeholders until supplied. Upload approved JPG, PNG or WebP images to `public\assets\trustees`, then set the matching trustee's `photo` to a website asset path such as `assets/trustees/roopa.jpg` and `photoAlt` to an accurate image description. Leave `photo: ''` to keep the initials placeholder. Builds reject missing configured files and empty image descriptions; browser loading failures show Photo unavailable. Use permitted files; do not scrape Instagram, hotlink expiring CDN URLs, or use account credentials.
 
 Keep **all imagery free of artist faces**, including trustee cards and gallery media. Check supplied files and use approved face-free crops or alternatives. Original local SVG illustrations currently represent the five art forms; they are not photographs or records of real performances. Do not describe them as such.
 
@@ -147,7 +147,7 @@ Keep **all imagery free of artist faces**, including trustee cards and gallery m
 | --- | --- |
 | `site.ts` | Display name/logo, tagline/signature, Instagram link, contact email, approved full vision, program/gallery notice, art-form definitions, local asset helpers |
 | `about.ts` | Complete approved About narrative and performing-art offerings |
-| `trustees.ts` | Five supplied trustee names, Trustee roles, and mission-based introductory paragraphs |
+| `trustees.ts` | Five supplied trustee names, Trustee roles, approved biographies, and editable photo/photoAlt fields |
 | `sponsors.json` | Editable sponsor names, bios, websites, logos and placeholder status |
 | `testimonials.ts` | Clearly labelled testimonial placeholders, or approved quotes and attributions |
 | `events.json` | Editable event dates, times, venues, artist links, photos and proposal status |

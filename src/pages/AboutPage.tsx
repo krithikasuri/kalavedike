@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import { trustees } from '../content/trustees'
 import { about } from '../content/about'
-import { artImage, site } from '../content/site'
+import { artImage, assetUrl, site } from '../content/site'
 import { Artwork } from '../components/Artwork'
 import { SampleBadge } from '../components/SampleBadge'
 import { VisionStatement } from '../components/VisionStatement'
@@ -58,7 +58,9 @@ export function AboutPage() {
         {trustees.length > 0 ? (
           <div className="trustee-grid">{trustees.map((trustee) => (
             <article className="trustee-card" key={trustee.id}>
-              <div className="trustee-photo-placeholder" role="img" aria-label={`Photo placeholder for ${trustee.name}`}><span className="trustee-initials" aria-hidden="true">{trustee.name.split(' ').map((part) => part[0]).join('')}</span><span className="trustee-photo-label" aria-hidden="true">Photo to follow</span></div>
+              {trustee.photo
+                ? <div className="trustee-photo"><Artwork src={assetUrl(trustee.photo)} alt={trustee.photoAlt} unavailableLabel="Photo unavailable" /></div>
+                : <div className="trustee-photo-placeholder" role="img" aria-label={`Photo placeholder for ${trustee.name}`}><span className="trustee-initials" aria-hidden="true">{trustee.name.split(' ').map((part) => part[0]).join('')}</span><span className="trustee-photo-label" aria-hidden="true">Photo to follow</span></div>}
               <p className="eyebrow">{trustee.role}</p><h3>{trustee.name}</h3><p>{trustee.bio}</p>
               {trustee.sample && <SampleBadge>Sample profile</SampleBadge>}
             </article>

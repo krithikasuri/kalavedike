@@ -8,6 +8,8 @@ for (const prefix of ['', 'production subpath: ']) {
     await expect(page).toHaveTitle('Website guide | Kalavedike')
     await expect(page.getByRole('heading', { level: 1, name: 'Website guide', exact: true })).toBeVisible()
     await expect(page.getByRole('main')).toBeFocused()
+    await expect(page.getByRole('heading', { name: 'Add trustee photos', exact: true })).toBeVisible()
+    await expect(page.getByRole('link', { name: /trustee photos folder/ })).toHaveAttribute('href', 'https://github.com/krithikasuri/kalavedike/tree/main/public/assets/trustees')
     await page.getByText('Show an event example', { exact: true }).click()
     await expect(page.getByLabel('Event JSON example')).toBeVisible()
     await page.getByText('Show a sponsor example', { exact: true }).click()

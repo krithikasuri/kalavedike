@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import App from './App'
 import { about } from './content/about'
-import { site } from './content/site'
+import { assetUrl, site } from './content/site'
 import { trustees } from './content/trustees'
 
 vi.mock('./content/events', async () => ({
@@ -15,6 +15,7 @@ vi.mock('./content/sponsors', async () => ({
 
 const firstEventId = 'calendar-2027-01-23-carnatic-vocal-1'
 const originalEmail = site.email
+const originalTrusteePhotos = trustees.map(({ photo, photoAlt }) => ({ photo, photoAlt }))
 const personalBiographies: Record<string, string> = {
   'roopa-sreedharan-madampath': "Dance has been a constant in my life, ever since I first started learning bharatanatyam at the age of 4. When adulthood and maturity crept into my life, I started considering bharatanatyam not just as an art form to practice and perform but as a way of seeing and engaging with the world. Now retired from professional life and from performances, I find myself drawn to a different kind of engagement with the arts — as one of the founders of Kalavedike. Kalavedike stands for what I truly believe in - that art should  be accessible to everyone and artists should have the freedom to explore, create and express themselves without constraints. Kalavedike is a wonderful opportunity to help create a space where art, artists, and art lovers can thrive.",
   'krithika-surianarayanan': "I spend my professional life in the world of technology, but I believe that some of life's most meaningful connections happen through art, culture, and community. As a student of Bharatanatyam and Carnatic music myself, I have a deep appreciation for the richness of Indian classical arts and the joy they bring to both performers and audiences. I am passionate about making these traditions more accessible to people in their own neighbourhoods. Kalavedike reflects my belief that great art need not be experienced only in established cultural centres, and that thriving communities are built when people come together to celebrate creativity, talent, and tradition.",
@@ -29,9 +30,31 @@ beforeEach(() => {
   HTMLDialogElement.prototype.showModal = function () { this.setAttribute('open', '') }
   HTMLDialogElement.prototype.close = function () { this.removeAttribute('open') }
 })
-afterEach(() => { vi.useRealTimers(); site.email = originalEmail })
+afterEach(() => {
+  vi.useRealTimers()
+  site.email = originalEmail
+  trustees.forEach((trustee, index) => Object.assign(trustee, originalTrusteePhotos[index]))
+})
 
 describe('Kalavedike pages', () => {
+  it('shows an uploaded trustee photo and reports an unavailable image without changing other placeholders', () => {
+    trustees.forEach((trustee) => { trustee.photo = ''; trustee.photoAlt = '' })
+    const trustee = trustees[0]
+    trustee.photo = 'assets/trustees/pallavi.jpg'
+    trustee.photoAlt = 'Approved photo of Pallavi K Srinivasa'
+    window.history.replaceState(null, '', '/#/about')
+    render(<App />)
+    const section = within(screen.getByRole('region', { name: 'Meet our trustees.' }))
+    const card = within(section.getAllByRole('article')[0])
+    const photo = card.getByRole('img', { name: trustee.photoAlt })
+    expect(photo).toHaveAttribute('src', assetUrl(trustee.photo))
+    expect(photo).toHaveAttribute('loading', 'lazy')
+    expect(card.queryByText('Photo to follow')).not.toBeInTheDocument()
+    expect(section.getAllByText('Photo to follow')).toHaveLength(4)
+    fireEvent.error(photo)
+    expect(card.getByRole('img', { name: `${trustee.photoAlt}. Image unavailable.` })).toHaveTextContent('Photo unavailable')
+    expect(card.queryByText('Photo to follow')).not.toBeInTheDocument()
+  })
   it('shows all art forms and fixture proposed programs with honest status and no fabricated time', () => {
     render(<App />)
     expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Bringing the arts closer to home.')
@@ -136,8 +159,13 @@ describe('Kalavedike pages', () => {
         expect(card.queryByText(new RegExp(`${trustee.name} is a trustee of Kalavedike\\.`))).not.toBeInTheDocument()
       }
       expect(card.getByText('Trustee', { exact: true })).toBeInTheDocument()
-      expect(card.getByRole('img', { name: `Photo placeholder for ${trustee.name}` })).toBeInTheDocument()
-      expect(card.getByText('Photo to follow')).toBeInTheDocument()
+      if (trustee.photo) {
+        expect(card.getByRole('img', { name: trustee.photoAlt })).toHaveAttribute('src', assetUrl(trustee.photo))
+        expect(card.queryByText('Photo to follow')).not.toBeInTheDocument()
+      } else {
+        expect(card.getByRole('img', { name: `Photo placeholder for ${trustee.name}` })).toBeInTheDocument()
+        expect(card.getByText('Photo to follow')).toBeInTheDocument()
+      }
     }
     expect(trusteeSection.getByText('Additional trustee biographies and photographs will be added when available.')).toBeInTheDocument()
     expect(main.queryByText(/Trustee profile 0|Illustrative trust copy|Sample vision and values|Stewardship & vision/)).not.toBeInTheDocument()
